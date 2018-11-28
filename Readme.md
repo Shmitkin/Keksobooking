@@ -1,7 +1,7 @@
 # Личный проект «Кексобукинг» [![Build status][travis-image]][travis-url]
 
 * Студент: [Олег Митькин](https://up.htmlacademy.ru/javascript/16/user/791669).
-* Наставник: `Неизвестно`.
+* Наставник: [Динар Гиндулин](https://htmlacademy.ru/profile/id884587).
 
 ---
 

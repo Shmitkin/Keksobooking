@@ -53,8 +53,7 @@ var getArrayClone = function (arrayToClone) {
 
 var getCardFeatures = function (featuresNumber) {
   var cardFeaturesCopy = getArrayClone(CARD_FEATURES);
-  cardFeaturesCopy.splice(featuresNumber);
-  var featuresList = cardFeaturesCopy.join(',');
+  var featuresList = cardFeaturesCopy.splice(featuresNumber - 1);
   return featuresList;
 };
 
@@ -64,6 +63,20 @@ var createPhotoNumbers = function (numberOfPhotos) {
     photoNumbers.push(i);
   }
   return photoNumbers;
+};
+
+var getRusCardType = function (TypeToTranslate) {
+  var cardTypesRus = TypeToTranslate;
+  if (cardTypesRus === 'flat') {
+    cardTypesRus = 'Квартира';
+  } else if (cardTypesRus === 'bungalo') {
+    cardTypesRus = 'Бунгало';
+  } else if (cardTypesRus === 'palace') {
+    cardTypesRus = 'Дворец';
+  } else if (cardTypesRus === 'house') {
+    cardTypesRus = 'Дом';
+  }
+  return cardTypesRus;
 };
 
 var cardTitles = getArrayClone(CARD_TITLES).sort(getRandomComparison);
@@ -135,7 +148,7 @@ var createPopUpInfo = function (cardNumber) {
   card.querySelector('.popup__title').innerHTML = cardsList[cardNumber].offer.title;
   card.querySelector('.popup__text--address').innerHTML = cardsList[cardNumber].offer.address;
   card.querySelector('.popup__text--price').innerHTML = cardsList[cardNumber].offer.price + '&#x20bd;<span>/ночь</span>';
-  card.querySelector('.popup__type').innerHTML = cardsList[cardNumber].offer.type;
+  card.querySelector('.popup__type').innerHTML = getRusCardType(cardsList[cardNumber].offer.type);
   card.querySelector('.popup__text--capacity').innerHTML = cardsList[cardNumber].offer.rooms
   + ' комнаты для '
   + cardsList[cardNumber].offer.guests

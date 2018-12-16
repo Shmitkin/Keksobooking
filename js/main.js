@@ -130,19 +130,19 @@ var removeMapFader = function () {
 
 var createPins = function (cards) {
   var mapPin = document.querySelector('#pin').content.querySelector('.map__pin');
-  var mapPinImg = mapPin.getElementsByTagName('img')[0];
   for (var i = 0; i < cards.length; i++) {
-    mapPin.style.left = cards[i].location.x - (MAP_PIN_WIDTH / 2) + 'px';
-    mapPin.style.top = cards[i].location.y - MAP_PIN_HEIGHT + 'px';
+    var anotherPin = mapPin.cloneNode(true);
+    var mapPinImg = anotherPin.getElementsByTagName('img')[0];
+    anotherPin.style.left = cards[i].location.x - (MAP_PIN_WIDTH / 2) + 'px';
+    anotherPin.style.top = cards[i].location.y - MAP_PIN_HEIGHT + 'px';
     mapPinImg.src = cards[i].avatar;
     mapPinImg.setAttribute('alt', cards[i].offer.title);
-    var anotherPin = mapPin.cloneNode(true);
     document.querySelector('.map__pins').appendChild(anotherPin);
   }
 };
 
-var createPopUpInfo = function (cardNumber) {
-  fillPopUpInfo(cardNumber[CARD_POPUP_NUMBER]);
+var createPopUpInfo = function (card) {
+  fillPopUpInfo(card);
 };
 
 var addPopUpPhotos = function (containerElement, photoElement, photosArray) {
@@ -170,13 +170,13 @@ var fillPopUpInfo = function (cardInfo) {
   card.querySelector('.popup__text--price').innerHTML = cardInfo.offer.price + '&#x20bd;<span>/ночь</span>';
   card.querySelector('.popup__type').textContent = getRusCardType(cardInfo.offer.type);
   card.querySelector('.popup__text--capacity').textContent = cardInfo.offer.rooms
-  + ' комнаты для '
-  + cardInfo.offer.guests
-  + ' гостей';
+    + ' комнаты для '
+    + cardInfo.offer.guests
+    + ' гостей';
   card.querySelector('.popup__text--time').textContent = 'Заезд после '
-  + cardInfo.offer.checkin
-  + ', выезд до '
-  + cardInfo.offer.checkout;
+    + cardInfo.offer.checkin
+    + ', выезд до '
+    + cardInfo.offer.checkout;
 
   addPopUpPhotos(card.querySelector('.popup__photos'), card.querySelector('.popup__photo'), cardInfo.offer.photos);
   addPopUpFeatures(cardInfo.offer.features, card);
@@ -188,7 +188,7 @@ var renderPage = function () {
   var cardsList = getCardsList(CARD_COUNT);
   removeMapFader();
   createPins(cardsList);
-  createPopUpInfo(cardsList);
+  createPopUpInfo(cardsList[CARD_POPUP_NUMBER]);
 };
 
 renderPage();

@@ -46,7 +46,7 @@ var CARD_PHOTOS = createPhotoLinks(CARD_PHOTOS_COUNT);
 var createAvatarLinks = function (numberOfAvatarLinks) {
   var photoNumbers = [];
   for (var i = 1; i < numberOfAvatarLinks + 1; i++) {
-    photoNumbers.push('img/avatars/user0' + i + '.png',);
+    photoNumbers.push('img/avatars/user0' + i + '.png');
   }
   return photoNumbers;
 };
@@ -104,11 +104,11 @@ var getCardsList = function (cardsNumber) {
       title: cardTitles[i],
       address: cardLocation.x + ', ' + cardLocation.y,
       price: getRandomInteger(MIN_PRICE, MAX_PRICE),
-      type: cardTypes[getRandomInteger(1, CARD_TYPES.length-1)],
+      type: cardTypes[getRandomInteger(1, CARD_TYPES.length - 1)],
       rooms: getRandomInteger(1, MAX_ROOMS_COUNT),
       guests: getRandomInteger(1, MAX_GUESTS),
-      checkin: cardCheckIns[getRandomInteger(1, cardCheckIns.length-1)],
-      checkout: cardCheckIns[getRandomInteger(1, cardCheckIns.length-1)],
+      checkin: cardCheckIns[getRandomInteger(1, cardCheckIns.length - 1)],
+      checkout: cardCheckIns[getRandomInteger(1, cardCheckIns.length - 1)],
       features: getCardFeatures(getRandomInteger(1, CARD_FEATURES.length)),
       description: '',
       photos: cardPhotos,
@@ -123,8 +123,6 @@ var getCardsList = function (cardsNumber) {
   return cardsList;
 };
 
-var CARDS_LIST = getCardsList(CARD_COUNT);
-
 var removeMapFader = function () {
   var mapSection = document.querySelector('.map');
   mapSection.classList.remove('map--faded');
@@ -133,7 +131,7 @@ var removeMapFader = function () {
 var createPins = function (cards) {
   var mapPin = document.querySelector('#pin').content.querySelector('.map__pin');
   var mapPinImg = mapPin.getElementsByTagName('img')[0];
-  for (var i = 0; i < CARDS_LIST.length; i++) {
+  for (var i = 0; i < cards.length; i++) {
     mapPin.style.left = cards[i].location.x - (MAP_PIN_WIDTH / 2) + 'px';
     mapPin.style.top = cards[i].location.y - MAP_PIN_HEIGHT + 'px';
     mapPinImg.src = cards[i].avatar;
@@ -144,17 +142,25 @@ var createPins = function (cards) {
 };
 
 var createPopUpInfo = function (cardNumber) {
-  fillPopUpInfo(CARDS_LIST[CARD_POPUP_NUMBER]);
+  fillPopUpInfo(cardNumber[CARD_POPUP_NUMBER]);
 };
 
-var addPopUpPhotos = function (DomElementParent, DomElementChild, photosArray) {
-  DomElementChild.src = photosArray[0];
+var addPopUpPhotos = function (containerElement, photoElement, photosArray) {
+  photoElement.src = photosArray[0];
   for (var i = 1; i < photosArray.length; i++) {
-    var anotherImg = DomElementChild.cloneNode(true);
+    var anotherImg = photoElement.cloneNode(true);
     anotherImg.src = photosArray[i];
-    DomElementParent.appendChild(anotherImg);
+    containerElement.appendChild(anotherImg);
   }
-}
+};
+
+var addPopUpFeatures = function (cardFeatures, card) {
+  for (var i = 0; i < CARD_FEATURES.length; i++) {
+    if (cardFeatures.indexOf(CARD_FEATURES[i]) === -1) {
+      card.querySelector('.popup__feature--' + CARD_FEATURES[i]).className = 'hidden';
+    }
+  }
+};
 
 var fillPopUpInfo = function (cardInfo) {
   var card = document.querySelector('#card').content.cloneNode(true);
@@ -168,37 +174,21 @@ var fillPopUpInfo = function (cardInfo) {
   + cardInfo.offer.guests
   + ' гостей';
   card.querySelector('.popup__text--time').textContent = 'Заезд после '
-  + cardInfo.offer.checkIn
+  + cardInfo.offer.checkin
   + ', выезд до '
-  + cardInfo.offer.checkOut;
+  + cardInfo.offer.checkout;
+
   addPopUpPhotos(card.querySelector('.popup__photos'), card.querySelector('.popup__photo'), cardInfo.offer.photos);
-  
-  if (cardInfo.offer.features.indexOf('wifi') === -1) {
-    card.querySelector('.popup__feature--wifi').className = 'hidden';
-  }
-  if (cardInfo.offer.features.indexOf('dishwasher') === -1) {
-    card.querySelector('.popup__feature--dishwasher').className = 'hidden';
-  }
-  if (cardInfo.offer.features.indexOf('parking') === -1) {
-    card.querySelector('.popup__feature--parking').className = 'hidden';
-  }
-  if (cardInfo.offer.features.indexOf('washer') === -1) {
-    card.querySelector('.popup__feature--washer').className = 'hidden';
-  }
-  if (cardInfo.offer.features.indexOf('elevator') === -1) {
-    card.querySelector('.popup__feature--elevator').className = 'hidden';
-  }
-  if (cardInfo.offer.features.indexOf('conditioner') === -1) {
-    card.querySelector('.popup__feature--conditioner').className = 'hidden';
-  }
+  addPopUpFeatures(cardInfo.offer.features, card);
+
   document.querySelector('.map').appendChild(card);
 };
 
 var renderPage = function () {
-removeMapFader();
-getCardsList(CARD_COUNT);
-createPins(CARDS_LIST);
-createPopUpInfo(CARD_POPUP_NUMBER);
+  var cardsList = getCardsList(CARD_COUNT);
+  removeMapFader();
+  createPins(cardsList);
+  createPopUpInfo(cardsList);
 };
 
 renderPage();

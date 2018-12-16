@@ -13,6 +13,8 @@ var MAX_Y_POSITION = 630;
 var MAP_PIN_WIDTH = 40;
 var MAP_PIN_HEIGHT = 60;
 var CARD_POPUP_NUMBER = 0;
+var MAIN_PIN_X = 570;
+var MAIN_PIN_Y = 375;
 var CARD_TITLES = [
   'Большая уютная квартира',
   'Маленькая неуютная квартира',
@@ -186,11 +188,89 @@ var fillPopUpInfo = function (cardInfo) {
 
 var renderPage = function () {
   var cardsList = getCardsList(CARD_COUNT);
-  removeMapFader();
   createPins(cardsList);
   createPopUpInfo(cardsList[CARD_POPUP_NUMBER]);
 };
 
 renderPage();
 
+var disableForm = function () {
+  var form = document.querySelector('.notice');
+  var formHeader = form.querySelector('.ad-form-header');
+  formHeader.setAttribute('disabled', true);
+  var formElement = form.querySelectorAll('.ad-form__element');
+  for (var i = 0; i < formElement.length; i++) {
+    formElement[i].setAttribute('disabled', true);
+  };
+  document.querySelector('#address').setAttribute('placeholder', MAIN_PIN_X + ', ' + MAIN_PIN_Y)
+};
 
+var enableForm = function () {
+  removeMapFader();
+  var form = document.querySelector('.notice');
+  var formHeader = form.querySelector('.ad-form-header');
+  formHeader.removeAttribute('disabled', true);
+  var formElement = form.querySelectorAll('.ad-form__element');
+  for (var i = 0; i < formElement.length; i++) {
+    formElement[i].removeAttribute('disabled', true);
+  };
+};
+
+disableForm();
+
+var fillAdressInput = function(clientX, clientY) {
+  var x = clientX.split('px').join('') - MAP_PIN_WIDTH / 2;
+  var y = clientY.split('px').join('') - MAP_PIN_HEIGHT;
+
+  var address = document.querySelector('#address');
+  address.setAttribute('placeholder', x + ', ' + y);
+};
+
+
+var mainPinHandle = document.querySelector('.map__pin--main');
+
+mainPinHandle.addEventListener('mousedown', function (evt) {
+  evt.preventDefault();
+  var startCoords = {
+    x: evt.clientX,
+    y: evt.clientY
+  };
+
+  var onMouseMove = function (moveEvt) {
+    moveEvt.preventDefault();
+
+    var shift = {
+      x: startCoords.x - moveEvt.clientX,
+      y: startCoords.y - moveEvt.clientY
+    };
+
+    startCoords = {
+      x: moveEvt.clientX,
+      y: moveEvt.clientY
+    };
+
+    mainPinHandle.style.top = (mainPinHandle.offsetTop - shift.y) + 'px';
+    mainPinHandle.style.left = (mainPinHandle.offsetLeft - shift.x) + 'px';
+  };
+
+  var onMouseUp = function (upEvt) {
+    upEvt.preventDefault();
+    document.removeEventListener('mousemove', onMouseMove);
+    document.removeEventListener('mouseup', onMouseUp);
+    fillAdressInput(mainPinHandle.style.left, mainPinHandle.style.top);
+    enableForm();
+  };
+
+  document.addEventListener('mousemove', onMouseMove);
+  document.addEventListener('mouseup', onMouseUp);
+});
+
+var mapPinClick = document.querySelectorAll('.map__pin');
+    console.log(mapPinClick);
+for (var i = 0; i < mapPinClick.length; i++) {
+  mapPinClick[i].addEventListener('click', function (evt) {
+  console.log(mapPinClick);
+  });
+}
+
+/////Решить проблему с попапом (не выскакивают ПИНЫ)

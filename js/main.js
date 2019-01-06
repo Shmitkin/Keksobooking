@@ -208,8 +208,8 @@ var disableForm = function () {
   var formElement = form.querySelectorAll('.ad-form__element');
   for (var i = 0; i < formElement.length; i++) {
     formElement[i].setAttribute('disabled', true);
-  };
-  document.querySelector('#address').setAttribute('placeholder', MAIN_PIN_X + ', ' + MAIN_PIN_Y)
+  }
+  document.querySelector('#address').setAttribute('placeholder', MAIN_PIN_X + ', ' + MAIN_PIN_Y);
 };
 
 var enableForm = function () {
@@ -221,7 +221,7 @@ var enableForm = function () {
   var formElement = form.querySelectorAll('.ad-form__element');
   for (var i = 0; i < formElement.length; i++) {
     formElement[i].removeAttribute('disabled', true);
-  };
+  }
 };
 
 disableForm();

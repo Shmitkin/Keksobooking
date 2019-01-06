@@ -143,6 +143,13 @@ var createPins = function (cards) {
   }
 };
 
+var removePins = function () {
+  var mapPins = document.querySelectorAll('.map__pin');
+  for (var i = 1; i < mapPins.length; i++) {
+    mapPins[i].remove();
+  }
+};
+
 var createPopUpInfo = function (card) {
   fillPopUpInfo(card);
 };
@@ -186,13 +193,13 @@ var fillPopUpInfo = function (cardInfo) {
   document.querySelector('.map').appendChild(card);
 };
 
-var renderPage = function () {
+var renderMapInfo = function () {
   var cardsList = getCardsList(CARD_COUNT);
+  enableForm();
+  removePins();
   createPins(cardsList);
-  createPopUpInfo(cardsList[CARD_POPUP_NUMBER]);
 };
 
-renderPage();
 
 var disableForm = function () {
   var form = document.querySelector('.notice');
@@ -207,7 +214,8 @@ var disableForm = function () {
 
 var enableForm = function () {
   removeMapFader();
-  var form = document.querySelector('.notice');
+  var form = document.querySelector('.ad-form');
+  form.classList.remove('ad-form--disabled');
   var formHeader = form.querySelector('.ad-form-header');
   formHeader.removeAttribute('disabled', true);
   var formElement = form.querySelectorAll('.ad-form__element');
@@ -218,7 +226,7 @@ var enableForm = function () {
 
 disableForm();
 
-var fillAdressInput = function(clientX, clientY) {
+var fillAdressInput = function (clientX, clientY) {
   var x = clientX.split('px').join('') - MAP_PIN_WIDTH / 2;
   var y = clientY.split('px').join('') - MAP_PIN_HEIGHT;
 
@@ -228,7 +236,6 @@ var fillAdressInput = function(clientX, clientY) {
 
 
 var mainPinHandle = document.querySelector('.map__pin--main');
-
 mainPinHandle.addEventListener('mousedown', function (evt) {
   evt.preventDefault();
   var startCoords = {
@@ -258,19 +265,9 @@ mainPinHandle.addEventListener('mousedown', function (evt) {
     document.removeEventListener('mousemove', onMouseMove);
     document.removeEventListener('mouseup', onMouseUp);
     fillAdressInput(mainPinHandle.style.left, mainPinHandle.style.top);
-    enableForm();
+    renderMapInfo();
   };
 
   document.addEventListener('mousemove', onMouseMove);
   document.addEventListener('mouseup', onMouseUp);
 });
-
-var mapPinClick = document.querySelectorAll('.map__pin');
-    console.log(mapPinClick);
-for (var i = 0; i < mapPinClick.length; i++) {
-  mapPinClick[i].addEventListener('click', function (evt) {
-  console.log(mapPinClick);
-  });
-}
-
-/////Решить проблему с попапом (не выскакивают ПИНЫ)

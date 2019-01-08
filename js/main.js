@@ -235,7 +235,7 @@ var enableForm = function () {
 
 disableForm();
 
-var fillAdressInput = function (clientX, clientY) {
+var fillAddressInput = function (clientX, clientY) {
   var x = clientX.split('px').join('') - MAP_PIN_WIDTH / 2;
   var y = clientY.split('px').join('') - MAP_PIN_HEIGHT;
 
@@ -273,10 +273,39 @@ mainPinHandle.addEventListener('mousedown', function (evt) {
     upEvt.preventDefault();
     document.removeEventListener('mousemove', onMouseMove);
     document.removeEventListener('mouseup', onMouseUp);
-    fillAdressInput(mainPinHandle.style.left, mainPinHandle.style.top);
+    fillAddressInput(mainPinHandle.style.left, mainPinHandle.style.top);
     renderMapInfo();
   };
 
   document.addEventListener('mousemove', onMouseMove);
   document.addEventListener('mouseup', onMouseUp);
 });
+
+// Валидация(синхронизация) времени заезда и выезда
+var timein = document.querySelector('#timein');
+var timeout = document.querySelector('#timeout');
+timein.addEventListener('click', function (evt){
+  timeout.value = timein.value;
+});
+timeout.addEventListener('click', function (evt) {
+  timein.value = timeout.value
+});
+
+// Проверка типа жилья и цены
+var type = document.querySelector('#type');
+var price = document.querySelector('#price');
+type.addEventListener('click', function (evt) {
+  if (type.value === 'flat') {
+    price.min = 1000;
+    price.placeholder = '1000'
+  } else if (type.value === 'house') {
+    price.min = 5000;
+    price.placeholder = '5000';
+  } else if (type.value === 'palace') {
+    price.min = 10000;
+    price.placeholder = '10000';
+  } else if (type.value === 'bungalo') {
+    price.min = 0;
+    price.placeholder = '0';
+  }
+})

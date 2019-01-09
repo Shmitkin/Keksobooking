@@ -284,20 +284,20 @@ mainPinHandle.addEventListener('mousedown', function (evt) {
 // Синхронизация времени заезда и выезда
 var timein = document.querySelector('#timein');
 var timeout = document.querySelector('#timeout');
-timein.addEventListener('change', function (evt){
+timein.addEventListener('change', function () {
   timeout.value = timein.value;
 });
-timeout.addEventListener('change', function (evt) {
-  timein.value = timeout.value
+timeout.addEventListener('change', function () {
+  timein.value = timeout.value;
 });
 
 // Проверка типа жилья и цены
 var type = document.querySelector('#type');
 var price = document.querySelector('#price');
-type.addEventListener('change', function (evt) {
+type.addEventListener('change', function () {
   if (type.value === 'flat') {
     price.min = 1000;
-    price.placeholder = '1000'
+    price.placeholder = '1000';
   } else if (type.value === 'house') {
     price.min = 5000;
     price.placeholder = '5000';
@@ -308,4 +308,4 @@ type.addEventListener('change', function (evt) {
     price.min = 0;
     price.placeholder = '0';
   }
-})
+});

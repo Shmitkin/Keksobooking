@@ -281,20 +281,20 @@ mainPinHandle.addEventListener('mousedown', function (evt) {
   document.addEventListener('mouseup', onMouseUp);
 });
 
-// Валидация(синхронизация) времени заезда и выезда
+// Синхронизация времени заезда и выезда
 var timein = document.querySelector('#timein');
 var timeout = document.querySelector('#timeout');
-timein.addEventListener('click', function (evt){
+timein.addEventListener('change', function (evt){
   timeout.value = timein.value;
 });
-timeout.addEventListener('click', function (evt) {
+timeout.addEventListener('change', function (evt) {
   timein.value = timeout.value
 });
 
 // Проверка типа жилья и цены
 var type = document.querySelector('#type');
 var price = document.querySelector('#price');
-type.addEventListener('click', function (evt) {
+type.addEventListener('change', function (evt) {
   if (type.value === 'flat') {
     price.min = 1000;
     price.placeholder = '1000'

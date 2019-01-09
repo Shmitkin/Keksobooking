@@ -12,7 +12,6 @@ var MIN_Y_POSITION = 130;
 var MAX_Y_POSITION = 630;
 var MAP_PIN_WIDTH = 40;
 var MAP_PIN_HEIGHT = 60;
-var CARD_POPUP_NUMBER = 0;
 var MAIN_PIN_X = 570;
 var MAIN_PIN_Y = 375;
 var CARD_TITLES = [
@@ -130,17 +129,21 @@ var removeMapFader = function () {
   mapSection.classList.remove('map--faded');
 };
 
-var createPins = function (cards) {
-  var mapPin = document.querySelector('#pin').content.querySelector('.map__pin');
-  for (var i = 0; i < cards.length; i++) {
-    var anotherPin = mapPin.cloneNode(true);
-    var mapPinImg = anotherPin.querySelector('img');
-    anotherPin.style.left = cards[i].location.x - (MAP_PIN_WIDTH / 2) + 'px';
-    anotherPin.style.top = cards[i].location.y - MAP_PIN_HEIGHT + 'px';
-    mapPinImg.src = cards[i].avatar;
-    mapPinImg.alt = cards[i].offer.title;
-    document.querySelector('.map__pins').appendChild(anotherPin);
-  }
+var mapPin = document.querySelector('#pin').content.querySelector('.map__pin');
+var createPin = function (cardPin) {
+  var anotherPin = mapPin.cloneNode(true);
+  var mapPinImg = anotherPin.querySelector('img');
+  anotherPin.style.left = cardPin.location.x - (MAP_PIN_WIDTH / 2) + 'px';
+  anotherPin.style.top = cardPin.location.y - MAP_PIN_HEIGHT + 'px';
+  mapPinImg.src = cardPin.avatar;
+  mapPinImg.alt = cardPin.offer.title;
+  anotherPin.addEventListener('click', function () {
+    if (document.querySelector('.map__card')) {
+      document.querySelector('.map__card').remove();
+    }
+    fillPopUpInfo(cardPin);
+  });
+  return anotherPin;
 };
 
 var removePins = function () {
@@ -148,10 +151,6 @@ var removePins = function () {
   for (var i = 0; i < mapPins.length; i++) {
     mapPins[i].remove();
   }
-};
-
-var createPopUpInfo = function (card) {
-  fillPopUpInfo(card);
 };
 
 var addPopUpPhotos = function (containerElement, photoElement, photosArray) {
@@ -186,27 +185,25 @@ var fillPopUpInfo = function (cardInfo) {
     + cardInfo.offer.checkin
     + ', выезд до '
     + cardInfo.offer.checkout;
-
   addPopUpPhotos(card.querySelector('.popup__photos'), card.querySelector('.popup__photo'), cardInfo.offer.photos);
   addPopUpFeatures(cardInfo.offer.features, card);
-
   document.querySelector('.map').appendChild(card);
+  var popupClose = document.querySelector('.popup__close');
+  popupClose.addEventListener('click', function () {
+    document.querySelector('.map__card').remove();
+  });
 };
 
 var renderMapInfo = function () {
+  var map = document.querySelector('.map');
+  var fragment = document.createDocumentFragment();
   var cardsList = getCardsList(CARD_COUNT);
   enableForm();
   removePins();
-  createPins(cardsList);
-  /*
-  // Сделать чтобы появлялся нужная карточка
-  var mapPinClick = document.querySelectorAll('.map__pin');
-  for (var i = 1; i < mapPinClick.length; i++) {
-    mapPinClick[i].addEventListener('click', function (evt) {
-    var pinImg = (this.querySelector('img'));
-    console.log(this);
-    });
-  }; */
+  for (var i = 0; i < cardsList.length; i++) {
+    fragment.appendChild(createPin(cardsList[i]));
+  }
+  map.appendChild(fragment);
 };
 
 

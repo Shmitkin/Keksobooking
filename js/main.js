@@ -248,14 +248,6 @@ var enableForm = function () {
   }
 };
 
-var fillAddressInput = function (clientX, clientY) {
-  var x = clientX.split('px').join('') - MAP_PIN_WIDTH / 2;
-  var y = clientY.split('px').join('') - MAP_PIN_HEIGHT;
-
-  var address = document.querySelector('#address');
-  address.value = x + ', ' + y;
-};
-
 var mainPinHandle = document.querySelector('.map__pin--main');
 mainPinHandle.addEventListener('mousedown', function (evt) {
   evt.preventDefault();
@@ -271,21 +263,49 @@ mainPinHandle.addEventListener('mousedown', function (evt) {
       y: startCoords.y - moveEvt.clientY
     };
 
+    var map = document.querySelector('.map');
+    var limits = {
+      top: 130 - MAP_PIN_HEIGHT,
+      left: 0,
+      right: map.clientWidth - MAP_PIN_WIDTH,
+      bottom: 600
+    };
+
     startCoords = {
       x: moveEvt.clientX,
       y: moveEvt.clientY
     };
 
+
     mainPinHandle.style.top = (mainPinHandle.offsetTop - shift.y) + 'px';
     mainPinHandle.style.left = (mainPinHandle.offsetLeft - shift.x) + 'px';
+
+    if (mainPinHandle.offsetTop - shift.y > limits.bottom) {
+      mainPinHandle.style.top = limits.bottom + 'px';
+    } else if (mainPinHandle.offsetTop - shift.y < limits.top) {
+      mainPinHandle.style.top = limits.top + 'px';
+    }
+    if (mainPinHandle.offsetLeft - shift.x < limits.left) {
+      mainPinHandle.style.left = limits.left + 'px';
+    } else if (mainPinHandle.offsetLeft - shift.x > limits.right) {
+      mainPinHandle.style.left = limits.right + 'px';
+    }
+
+    fillAddressInput(mainPinHandle.style.left, mainPinHandle.style.top);
   };
 
   var onMouseUp = function (upEvt) {
     upEvt.preventDefault();
     document.removeEventListener('mousemove', onMouseMove);
     document.removeEventListener('mouseup', onMouseUp);
-    fillAddressInput(mainPinHandle.style.left, mainPinHandle.style.top);
     renderMapInfo();
+  };
+
+  var fillAddressInput = function (clientX, clientY) {
+    var x = clientX.split('px').join('') - MAP_PIN_WIDTH / 2;
+    var y = clientY.split('px').join('') - MAP_PIN_HEIGHT;
+    var address = document.querySelector('#address');
+    address.value = x + ', ' + y;
   };
 
   document.addEventListener('mousemove', onMouseMove);

@@ -151,11 +151,10 @@ var createPin = function (cardPin) {
 
 var checkPins = function () {
   var mapPins = document.querySelectorAll('.map__pin:not(.map__pin--main)');
-  if (mapPins.length > 0) {
-  } else {
+  if (mapPins.length <= 0) {
     renderMapInfo();
   }
-}
+};
 
 var removePins = function () {
   var mapPins = document.querySelectorAll('.map__pin:not(.map__pin--main)');
@@ -214,7 +213,7 @@ var fillPopUpInfo = function (cardInfo) {
     if (evt.keyCode === 27) {
       removeMapCard();
     }
-  })
+  });
 };
 
 var removeMapCard = function () {
@@ -415,7 +414,7 @@ type.addEventListener('change', function () {
 });
 
 // Кнопка опубликовать
-submit.addEventListener('click', function (evt) {
+submit.addEventListener('click', function () {
   if (title.validity.valid === true && price.validity.valid === true) {
     successMessage.classList.remove('hidden');
     resetForm();

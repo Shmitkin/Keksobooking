@@ -149,6 +149,14 @@ var createPin = function (cardPin) {
   return anotherPin;
 };
 
+var checkPins = function () {
+  var mapPins = document.querySelectorAll('.map__pin:not(.map__pin--main)');
+  if (mapPins.length > 0) {
+  } else {
+    renderMapInfo();
+  }
+}
+
 var removePins = function () {
   var mapPins = document.querySelectorAll('.map__pin:not(.map__pin--main)');
   for (var i = 0; i < mapPins.length; i++) {
@@ -181,10 +189,11 @@ var addPopUpFeatures = function (cardFeatures, card) {
 
 var fillPopUpInfo = function (cardInfo) {
   var card = document.querySelector('#card').content.cloneNode(true);
+  var priceNight = '\u20BD/ночь';
   card.querySelector('.popup__avatar').src = cardInfo.avatar;
   card.querySelector('.popup__title').textContent = cardInfo.offer.title;
   card.querySelector('.popup__text--address').textContent = cardInfo.offer.address;
-  card.querySelector('.popup__text--price').innerHTML = cardInfo.offer.price + '&#x20bd;<span>/ночь</span>';
+  card.querySelector('.popup__text--price').textContent = cardInfo.offer.price + priceNight;
   card.querySelector('.popup__type').textContent = getRusCardType(cardInfo.offer.type);
   card.querySelector('.popup__text--capacity').textContent = cardInfo.offer.rooms
     + ' комнаты для '
@@ -201,11 +210,17 @@ var fillPopUpInfo = function (cardInfo) {
   popupClose.addEventListener('click', function () {
     removeMapCard();
   });
+  document.addEventListener('keydown', function (evt) {
+    if (evt.keyCode === 27) {
+      removeMapCard();
+    }
+  })
 };
 
 var removeMapCard = function () {
-  if (document.querySelector('.map__card')) {
-    document.querySelector('.map__card').remove();
+  var cardPopup = document.querySelector('.map__card');
+  if (cardPopup) {
+    cardPopup.remove();
   }
 };
 
@@ -220,7 +235,6 @@ var renderMapInfo = function () {
   }
   map.appendChild(fragment);
 };
-
 
 var disableForm = function () {
   var form = document.querySelector('.ad-form');
@@ -249,6 +263,14 @@ var enableForm = function () {
 };
 
 var mainPinHandle = document.querySelector('.map__pin--main');
+var map = document.querySelector('.map');
+var LIMITS_MAIN_PIN = {
+  top: 130 - MAP_PIN_HEIGHT,
+  left: 0,
+  right: map.clientWidth - MAP_PIN_WIDTH,
+  bottom: 630
+};
+
 mainPinHandle.addEventListener('mousedown', function (evt) {
   evt.preventDefault();
   var startCoords = {
@@ -263,32 +285,23 @@ mainPinHandle.addEventListener('mousedown', function (evt) {
       y: startCoords.y - moveEvt.clientY
     };
 
-    var map = document.querySelector('.map');
-    var limits = {
-      top: 130 - MAP_PIN_HEIGHT,
-      left: 0,
-      right: map.clientWidth - MAP_PIN_WIDTH,
-      bottom: 630
-    };
-
     startCoords = {
       x: moveEvt.clientX,
       y: moveEvt.clientY
     };
 
-
     mainPinHandle.style.top = (mainPinHandle.offsetTop - shift.y) + 'px';
     mainPinHandle.style.left = (mainPinHandle.offsetLeft - shift.x) + 'px';
 
-    if (mainPinHandle.offsetTop - shift.y > limits.bottom) {
-      mainPinHandle.style.top = limits.bottom + 'px';
-    } else if (mainPinHandle.offsetTop - shift.y < limits.top) {
-      mainPinHandle.style.top = limits.top + 'px';
+    if (mainPinHandle.offsetTop - shift.y > LIMITS_MAIN_PIN.bottom) {
+      mainPinHandle.style.top = LIMITS_MAIN_PIN.bottom + 'px';
+    } else if (mainPinHandle.offsetTop - shift.y < LIMITS_MAIN_PIN.top) {
+      mainPinHandle.style.top = LIMITS_MAIN_PIN.top + 'px';
     }
-    if (mainPinHandle.offsetLeft - shift.x < limits.left) {
-      mainPinHandle.style.left = limits.left + 'px';
-    } else if (mainPinHandle.offsetLeft - shift.x > limits.right) {
-      mainPinHandle.style.left = limits.right + 'px';
+    if (mainPinHandle.offsetLeft - shift.x < LIMITS_MAIN_PIN.left) {
+      mainPinHandle.style.left = LIMITS_MAIN_PIN.left + 'px';
+    } else if (mainPinHandle.offsetLeft - shift.x > LIMITS_MAIN_PIN.right) {
+      mainPinHandle.style.left = LIMITS_MAIN_PIN.right + 'px';
     }
 
     fillAddressInput(mainPinHandle.style.left, mainPinHandle.style.top);
@@ -298,7 +311,7 @@ mainPinHandle.addEventListener('mousedown', function (evt) {
     upEvt.preventDefault();
     document.removeEventListener('mousemove', onMouseMove);
     document.removeEventListener('mouseup', onMouseUp);
-    renderMapInfo();
+    checkPins();
   };
 
   var fillAddressInput = function (clientX, clientY) {
@@ -364,6 +377,8 @@ var resetForm = function () {
   selectDefault(roomNumber);
   selectDefault(capacity);
   uncheckFeatures(formFeatures);
+  price.placeholder = typeHouseMatchPrice[type.value];
+  price.min = typeHouseMatchPrice[type.value];
   disableForm();
 };
 
@@ -401,7 +416,6 @@ type.addEventListener('change', function () {
 
 // Кнопка опубликовать
 submit.addEventListener('click', function (evt) {
-  evt.preventDefault();
   if (title.validity.valid === true && price.validity.valid === true) {
     successMessage.classList.remove('hidden');
     resetForm();

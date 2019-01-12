@@ -268,7 +268,7 @@ mainPinHandle.addEventListener('mousedown', function (evt) {
       top: 130 - MAP_PIN_HEIGHT,
       left: 0,
       right: map.clientWidth - MAP_PIN_WIDTH,
-      bottom: 600
+      bottom: 630
     };
 
     startCoords = {

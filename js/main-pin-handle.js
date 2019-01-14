@@ -53,8 +53,8 @@
     };
 
     var fillAddressInput = function (clientX, clientY) {
-      var x = clientX.split('px').join('') - window.utils.MAP_PIN_WIDTH / 2;
-      var y = clientY.split('px').join('') - window.utils.MAP_PIN_HEIGHT;
+      var x = parseInt(clientX, 10) + window.utils.MAP_PIN_WIDTH / 2;
+      var y = parseInt(clientY, 10) + window.utils.MAP_PIN_HEIGHT;
       var address = document.querySelector('#address');
       address.value = x + ', ' + y;
     };

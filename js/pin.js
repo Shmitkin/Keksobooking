@@ -1,8 +1,7 @@
 'use strict';
 
 (function () {
-  var MAIN_PIN_X = 570;
-  var MAIN_PIN_Y = 375;
+
   var CARD_COUNT = 8;
   var createPin = function (cardPin) {
     var mapPin = document.querySelector('#pin').content.querySelector('.map__pin');

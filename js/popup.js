@@ -1,25 +1,25 @@
 'use strict';
 (function () {
 
-  var fillPopUpInfo = function (cardInfo) {
-    var card = document.querySelector('#card').content.cloneNode(true);
+  var fillPopUpInfo = function (card) {
+    var popupCard = document.querySelector('#card').content.cloneNode(true);
     var priceNight = '\u20BD/ночь';
-    card.querySelector('.popup__avatar').src = cardInfo.avatar;
-    card.querySelector('.popup__title').textContent = cardInfo.offer.title;
-    card.querySelector('.popup__text--address').textContent = cardInfo.offer.address;
-    card.querySelector('.popup__text--price').textContent = cardInfo.offer.price + priceNight;
-    card.querySelector('.popup__type').textContent = getRusCardType(cardInfo.offer.type);
-    card.querySelector('.popup__text--capacity').textContent = cardInfo.offer.rooms
+    popupCard.querySelector('.popup__avatar').src = card.author.avatar;
+    popupCard.querySelector('.popup__title').textContent = card.offer.title;
+    popupCard.querySelector('.popup__text--address').textContent = card.offer.address;
+    popupCard.querySelector('.popup__text--price').textContent = card.offer.price + priceNight;
+    popupCard.querySelector('.popup__type').textContent = getRusCardType(card.offer.type);
+    popupCard.querySelector('.popup__text--capacity').textContent = card.offer.rooms
       + ' комнаты для '
-      + cardInfo.offer.guests
+      + card.offer.guests
       + ' гостей';
-    card.querySelector('.popup__text--time').textContent = 'Заезд после '
-      + cardInfo.offer.checkin
+    popupCard.querySelector('.popup__text--time').textContent = 'Заезд после '
+      + card.offer.checkin
       + ', выезд до '
-      + cardInfo.offer.checkout;
-    addPopUpPhotos(card.querySelector('.popup__photos'), card.querySelector('.popup__photo'), cardInfo.offer.photos);
-    addPopUpFeatures(cardInfo.offer.features, card);
-    document.querySelector('.map').appendChild(card);
+      + card.offer.checkout;
+    addPopUpPhotos(popupCard.querySelector('.popup__photos'), popupCard.querySelector('.popup__photo'), card.offer.photos);
+    addPopUpFeatures(card.offer.features, popupCard);
+    document.querySelector('.map').appendChild(popupCard);
     var popupClose = document.querySelector('.popup__close');
     popupClose.addEventListener('click', function () {
       window.utils.removeMapCard();
@@ -65,6 +65,7 @@
       }
     }
   };
+
   //  Exports
   window.popup = {
     fillPopUpInfo: fillPopUpInfo

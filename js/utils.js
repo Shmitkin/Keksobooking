@@ -2,6 +2,8 @@
 (function () {
   var MAP_PIN_WIDTH = 40;
   var MAP_PIN_HEIGHT = 60;
+  var MAIN_PIN_X = 570;
+  var MAIN_PIN_Y = 375;
   var mapSection = document.querySelector('.map');
 
   var removeMapCard = function () {
@@ -18,22 +20,36 @@
     }
   };
 
-  var removeMapFader = function () {
-    mapSection.classList.remove('map--faded');
-  };
+  var resetFormFields = function (formToReset) {
+    var formInputs = formToReset.querySelectorAll('input:not([type="checkbox"])');
+    var formSelects = formToReset.querySelectorAll('select');
+    var formCheckboxes = formToReset.querySelectorAll('[type="checkbox"]');
 
-  var addMapFader = function () {
-    mapSection.classList.add('map--faded');
-  };
+    formInputs.forEach(function (input) {
+      input.value = '';
+    });
 
+    formCheckboxes.forEach(function (checkbox) {
+      checkbox.checked = false;
+    });
+
+    formSelects.forEach(function (select) {
+      for (var i = 0; i < select.length; i++) {
+        if (select[i].defaultSelected === true) {
+          select.value = select[i].value;
+        }
+      }
+    });
+  };
 
   // Exports
   window.utils = {
-    addMapFader: addMapFader,
-    removeMapFader: removeMapFader,
+    resetFormFields: resetFormFields,
     removePins: removePins,
     removeMapCard: removeMapCard,
     MAP_PIN_HEIGHT: MAP_PIN_HEIGHT,
     MAP_PIN_WIDTH: MAP_PIN_WIDTH,
+    MAIN_PIN_X: MAIN_PIN_X,
+    MAIN_PIN_Y: MAIN_PIN_Y,
   };
 })();

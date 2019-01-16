@@ -62,7 +62,7 @@
     var checkPins = function () {
       var mapPins = document.querySelectorAll('.map__pin:not(.map__pin--main)');
       if (mapPins.length <= 0) {
-        window.pin.renderPins();
+        window.map.loadPins();
       }
     };
 

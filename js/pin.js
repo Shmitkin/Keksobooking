@@ -24,8 +24,14 @@
       var fragment = document.createDocumentFragment();
       window.form.enableForm();
       window.utils.removePins();
-      for (var i = 0; i < cards.length; i++) {
-        fragment.appendChild(createPin(cards[i]));
+      if (cards.length > PINS_LIMIT) {
+        for (var i = 0; i < PINS_LIMIT; i++) {
+          fragment.appendChild(createPin(cards[i]));
+        }
+      } else { 
+        for (var i = 0; i < cards.length; i++) {
+          fragment.appendChild(createPin(cards[i]));
+        }
       }
       map.appendChild(fragment);
     };

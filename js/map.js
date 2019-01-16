@@ -50,10 +50,7 @@
   };
 
   var updateCards = function (cards) {
-  	var newCards = [];
     var sameType = [];
-    var sameRooms = [];
-    var sameCapacity = [];
         mapFilters.features.forEach(function (input) {
       input.addEventListener('change', function () {
         console.log(input.value);
@@ -69,54 +66,11 @@
       }
       cardsFiltered(sameType);
     })
-
-
-    // фильтр комнат
-    mapFilters.rooms.addEventListener('change', function () {
-      sameRooms = cards.filter(function(it){
-        return it.offer.rooms == mapFilters.rooms.value;
-      })
-      if (mapFilters.rooms.value === 'any') {
-        sameRooms = cards;
-      }
-      cardsFiltered(sameRooms);
-    })
-
-    //фильтр гостей
-    mapFilters.capacity.addEventListener('change', function () {
-      sameCapacity = cards.filter(function(it){
-        return it.offer.guests == mapFilters.capacity.value;
-      })
-      if (mapFilters.capacity.value === 'any') {
-        sameCapacity = cards;
-      }
-      cardsFiltered(sameCapacity);
-    })
-
-
     var cardsFiltered = function (similar) {
-      var cardsArray = cards;
-      var filtered = [];
-      if (cardsArray.length >= similar.length) {
-        for(var i = 0; i < similar.length; i++) {
-          if (cardsArray.includes(similar[i])) {
-            filtered.push(similar[i]);
-          }
-        }
-      } else {
-          for(var i = 0; i < newCards.length; i++) {
-            if (newCards.includes(similar[i])) {
-              filtered.push(similar[i]);
-            }
-          }
-        }
-        newCards = filtered;
-        console.log(newCards);
+      window.pin.renderPins(similar);
     }
       
   window.pin.renderPins(cards);
-  console.log(cards);
-
   }
 
 

@@ -100,11 +100,14 @@
       }
     }
     var filterFeatures = function (cards) {
+      var cardsToFilter = cards;
       for (var i = 0; i < mapFilters.features.length; i++) {
         if (mapFilters.features[i].checked) {
-          cardsCopy = cards.filter(it => it.offer.features.includes(mapFilters.features[i].value));
+          var someCards = cardsToFilter.filter(it => it.offer.features.includes(mapFilters.features[i].value));
+          cardsToFilter = someCards;
         }
       }
+      cardsCopy = cardsToFilter;
     }
     filterGuests(cardsCopy);
     filterType(cardsCopy);

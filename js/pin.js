@@ -19,6 +19,7 @@
     return anotherPin;
   };
 
+
   var renderPins = function (cards) {
     var map = document.querySelector('.map');
     var fragment = document.createDocumentFragment();
@@ -29,7 +30,7 @@
         fragment.appendChild(createPin(cards[i]));
       }
     } else {
-      for (var j = 0; j < cards.length; i++) {
+      for (var j = 0; j < cards.length; j++) {
         fragment.appendChild(createPin(cards[j]));
       }
     }

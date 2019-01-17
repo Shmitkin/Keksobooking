@@ -2,20 +2,13 @@
 
 (function () {
 
-
+  var cards = [];
   var map = document.querySelector('.map');
   var mapFormFilters = map.querySelector('.map__filters');
-  var mapFilters = {
-    type: map.querySelector('#housing-type'),
-    price: map.querySelector('#housing-price'),
-    rooms: map.querySelector('#housing-rooms'),
-    capacity: map.querySelector('#housing-guests'),
-    features: map.querySelector('#housing-features').querySelectorAll('input')
-  };
 
   var loadPins = function () {
     var successHandler = function (data) {
-      var cards = data;
+      cards = data;
       updateCards(cards);
     };
     window.loadCardsInfo(successHandler);
@@ -44,21 +37,102 @@
   };
 
   var updateCards = function (cardsToUpdate) {
-    var sameType = [];
+    var mapFilters = {
+      type: map.querySelector('#housing-type'),
+      price: map.querySelector('#housing-price'),
+      rooms: map.querySelector('#housing-rooms'),
+      capacity: map.querySelector('#housing-guests'),
+      features: map.querySelector('#housing-features').querySelectorAll('input')
+    };
+    var sameType = cardsToUpdate;
+    var samePrice = cardsToUpdate;
+    var sameRooms = cardsToUpdate;
+    var sameCapacity = cardsToUpdate;
+
+    // фильтр типа жилья
     mapFilters.type.addEventListener('change', function () {
-      sameType = cardsToUpdate.filter(function (it) {
-        return it.offer.type === mapFilters.type.value;
-      });
       if (mapFilters.type.value === 'any') {
         sameType = cardsToUpdate;
+      } else {
+        sameType = cardsToUpdate.filter(function (it) {
+          return it.offer.type === mapFilters.type.value;
+        });
       }
-      cardsFiltered(sameType);
+      applyFilters();
     });
-    var cardsFiltered = function (similar) {
-      window.pin.renderPins(similar);
-    };
 
-    window.pin.renderPins(cardsToUpdate);
+    // фильтр по цене
+//    mapFilters.type.addEventListener('change', function () {
+//      if (mapFilters.type.value === 'any') {
+//        sameType = cardsToUpdate;
+//      } else {
+//        sameType = cardsToUpdate.filter(function (it) {
+//          return it.offer.type === mapFilters.type.value;
+//        });
+//      }
+//    });
+
+    // фильтр по количеству комнат
+    mapFilters.rooms.addEventListener('change', function () {
+      if (mapFilters.rooms.value === 'any') {
+        sameRooms = cardsToUpdate;
+      } else {
+        sameRooms = cardsToUpdate.filter(function (it) {
+          return it.offer.rooms == mapFilters.rooms.value;
+        });
+      }
+      applyFilters();
+    });
+
+    // фильтр по количеству гостей
+    mapFilters.capacity.addEventListener('change', function () {
+      if (mapFilters.capacity.value === 'any') {
+        sameCapacity = cardsToUpdate;
+      } else {
+        sameCapacity = cardsToUpdate.filter(function (it) {
+          return it.offer.guests == mapFilters.capacity.value;
+        });
+      }
+      applyFilters();
+    });
+
+    var applyFilters = function () {
+      var cardsNew = [];
+      var cardsMinLengthArray = [];
+      var cardsFiltered = [];
+      var uniqueCards = [];
+      var cardsTotal = [];
+      cardsNew.push(sameType);
+      cardsNew.push(samePrice);
+      cardsNew.push(sameRooms);
+      cardsNew.push(sameCapacity);
+      cardsNew.sort();
+      cardsMinLengthArray = cardsNew[0];
+      //cardsNew.reverse();
+      console.log(cardsNew);
+      for(var i = 0; i < cardsMinLengthArray.length; i++) {
+        cardsNew.forEach(function (array) {
+          if (array.includes(cardsMinLengthArray[i])) {
+            cardsFiltered.push(cardsMinLengthArray[i]);
+            console.log(cardsFiltered.length);
+          }
+        });
+        if (cardsFiltered.length === 4) {
+          var newArr = cardsTotal.concat(cardsFiltered);
+          cardsTotal = newArr;
+          console.log(cardsTotal);
+          cardsFiltered = [];
+        } else {
+          cardsFiltered = [];
+          console.log(cardsTotal);
+        }
+      }
+      uniqueCards = cardsTotal.filter(function (it, i) {
+        return cardsTotal.indexOf(it) === i;
+      });
+      window.pin.renderPins(uniqueCards);
+     }
+  window.pin.renderPins(cardsToUpdate);
   };
 
   // console.log(mapFilters);
@@ -68,6 +142,11 @@
     resetMap: resetMap,
     addMapFader: addMapFader,
     removeMapFader: removeMapFader,
-
   };
+
 })();
+//    mapFilters.features.forEach(function (input) {
+//      input.addEventListener('change', function () {
+//        console.log(input.value);
+//      });
+//    });

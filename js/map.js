@@ -134,6 +134,7 @@
       uniqueCards = cardsTotal.filter(function (it, k) {
         return cardsTotal.indexOf(it) === k;
       });
+      window.utils.removeMapCard();
       window.pin.renderPins(uniqueCards);
     };
     window.pin.renderPins(cardsToUpdate);

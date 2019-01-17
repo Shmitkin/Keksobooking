@@ -123,9 +123,8 @@
           }
         });
         if (cardsFiltered.length === 4) {
-          var newArr = cardsTotal.concat(cardsFiltered);
-          cardsTotal = newArr;
-
+          var newСardsTotal = cardsTotal.concat(cardsFiltered);
+          cardsTotal = newСardsTotal;
           cardsFiltered = [];
         } else {
           cardsFiltered = [];
@@ -140,7 +139,6 @@
     window.pin.renderPins(cardsToUpdate);
   };
 
-  // console.log(mapFilters);
   // Exports
   window.map = {
     loadPins: loadPins,
@@ -150,8 +148,3 @@
   };
 
 })();
-//    mapFilters.features.forEach(function (input) {
-//      input.addEventListener('change', function () {
-//        console.log(input.value);
-//      });
-//    });

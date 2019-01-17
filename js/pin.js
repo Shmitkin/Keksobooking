@@ -19,22 +19,22 @@
     return anotherPin;
   };
 
-  var renderPins = function (cards) { 
-      var map = document.querySelector('.map');
-      var fragment = document.createDocumentFragment();
-      window.form.enableForm();
-      window.utils.removePins();
-      if (cards.length > PINS_LIMIT) {
-        for (var i = 0; i < PINS_LIMIT; i++) {
-          fragment.appendChild(createPin(cards[i]));
-        }
-      } else { 
-        for (var i = 0; i < cards.length; i++) {
-          fragment.appendChild(createPin(cards[i]));
-        }
+  var renderPins = function (cards) {
+    var map = document.querySelector('.map');
+    var fragment = document.createDocumentFragment();
+    window.form.enableForm();
+    window.utils.removePins();
+    if (cards.length > PINS_LIMIT) {
+      for (var i = 0; i < PINS_LIMIT; i++) {
+        fragment.appendChild(createPin(cards[i]));
       }
-      map.appendChild(fragment);
-    };
+    } else {
+      for (var j = 0; j < cards.length; i++) {
+        fragment.appendChild(createPin(cards[j]));
+      }
+    }
+    map.appendChild(fragment);
+  };
 
   // Exports
   window.pin = {

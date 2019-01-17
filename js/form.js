@@ -3,8 +3,6 @@
   var form = document.querySelector('.ad-form');
   var timein = form.querySelector('#timein');
   var timeout = form.querySelector('#timeout');
-  var roomNumber = form.querySelector('#room_number');
-  var capacity = form.querySelector('#capacity');
   var type = form.querySelector('#type');
   var price = form.querySelector('#price');
   var successMessage = document.querySelector('.success');

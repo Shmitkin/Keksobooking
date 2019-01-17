@@ -4,7 +4,6 @@
   var MAP_PIN_HEIGHT = 60;
   var MAIN_PIN_X = 570;
   var MAIN_PIN_Y = 375;
-  var mapSection = document.querySelector('.map');
 
   var removeMapCard = function () {
     var cardPopup = document.querySelector('.map__card');

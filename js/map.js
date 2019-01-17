@@ -2,7 +2,7 @@
 
 (function () {
 
-  var cards = [];
+
   var map = document.querySelector('.map');
   var mapFormFilters = map.querySelector('.map__filters');
   var mapFilters = {
@@ -11,20 +11,14 @@
     rooms: map.querySelector('#housing-rooms'),
     capacity: map.querySelector('#housing-guests'),
     features: map.querySelector('#housing-features').querySelectorAll('input')
-  }
+  };
 
   var loadPins = function () {
     var successHandler = function (data) {
-      cards = data;
+      var cards = data;
       updateCards(cards);
     };
-    window.loadCardsInfo(successHandler, console.log);
-  };
-
-  var resetMainPin = function () {
-    var mainPin = document.querySelector('.map__pin--main');
-    mainPin.style.left = MAIN_PIN_X + 'px';
-    mainPin.style.top = MAIN_PIN_Y + 'px';
+    window.loadCardsInfo(successHandler);
   };
 
   var resetMap = function () {
@@ -49,41 +43,31 @@
     map.classList.add('map--faded');
   };
 
-  var updateCards = function (cards) {
+  var updateCards = function (cardsToUpdate) {
     var sameType = [];
-        mapFilters.features.forEach(function (input) {
-      input.addEventListener('change', function () {
-        console.log(input.value);
-      })
-    })
-    //фильтр типа
     mapFilters.type.addEventListener('change', function () {
-      sameType = cards.filter(function(it){
+      sameType = cardsToUpdate.filter(function (it) {
         return it.offer.type === mapFilters.type.value;
-      })
+      });
       if (mapFilters.type.value === 'any') {
-        sameType = cards;
+        sameType = cardsToUpdate;
       }
       cardsFiltered(sameType);
-    })
+    });
     var cardsFiltered = function (similar) {
       window.pin.renderPins(similar);
-    }
-      
-  window.pin.renderPins(cards);
-  }
+    };
 
+    window.pin.renderPins(cardsToUpdate);
+  };
 
-
- // console.log(mapFilters);
+  // console.log(mapFilters);
   // Exports
   window.map = {
-  	loadPins: loadPins,
+    loadPins: loadPins,
     resetMap: resetMap,
     addMapFader: addMapFader,
     removeMapFader: removeMapFader,
 
-
-
-  }
+  };
 })();

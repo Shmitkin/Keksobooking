@@ -44,10 +44,19 @@
       capacity: map.querySelector('#housing-guests'),
       features: map.querySelector('#housing-features').querySelectorAll('input')
     };
+
+    var priceFilter = {
+      any: 'any',
+      low: 'low',
+      middle: 'middle',
+      high: 'high'
+    };
+
     var sameType = cardsToUpdate;
     var samePrice = cardsToUpdate;
     var sameRooms = cardsToUpdate;
     var sameCapacity = cardsToUpdate;
+    console.log(cardsToUpdate);
 
     // фильтр типа жилья
     mapFilters.type.addEventListener('change', function () {
@@ -62,24 +71,25 @@
     });
 
     // фильтр по цене
-//    mapFilters.type.addEventListener('change', function () {
-//      if (mapFilters.type.value === 'any') {
-//        sameType = cardsToUpdate;
-//      } else {
-//        sameType = cardsToUpdate.filter(function (it) {
-//          return it.offer.type === mapFilters.type.value;
-//        });
-//      }
-//    });
+    mapFilters.price.addEventListener('change', function () {
+      if (mapFilters.price.value === priceFilter.any) {
+        samePrice = cardsToUpdate;
+      } else if (mapFilters.price.value === priceFilter.low) {
+        samePrice = cardsToUpdate.filter(it => it.offer.price < 10000);
+      } else if (mapFilters.price.value === priceFilter.middle) {
+        samePrice = cardsToUpdate.filter(it => it.offer.price >= 10000 && it.offer.price <= 50000);
+      } else if (mapFilters.price.value === priceFilter.high) {
+        samePrice = cardsToUpdate.filter(it => it.offer.price > 50000);
+      }
+      applyFilters();
+    });
 
     // фильтр по количеству комнат
     mapFilters.rooms.addEventListener('change', function () {
       if (mapFilters.rooms.value === 'any') {
         sameRooms = cardsToUpdate;
       } else {
-        sameRooms = cardsToUpdate.filter(function (it) {
-          return it.offer.rooms == mapFilters.rooms.value;
-        });
+        sameRooms = cardsToUpdate.filter(it => it.offer.rooms.toString() === mapFilters.rooms.value);
       }
       applyFilters();
     });
@@ -89,9 +99,7 @@
       if (mapFilters.capacity.value === 'any') {
         sameCapacity = cardsToUpdate;
       } else {
-        sameCapacity = cardsToUpdate.filter(function (it) {
-          return it.offer.guests == mapFilters.capacity.value;
-        });
+        sameCapacity = cardsToUpdate.filter(it => it.offer.guests.toString() === mapFilters.capacity.value);
       }
       applyFilters();
     });
@@ -108,31 +116,27 @@
       cardsNew.push(sameCapacity);
       cardsNew.sort();
       cardsMinLengthArray = cardsNew[0];
-      //cardsNew.reverse();
-      console.log(cardsNew);
-      for(var i = 0; i < cardsMinLengthArray.length; i++) {
+      for (var i = 0; i < cardsMinLengthArray.length; i++) {
         cardsNew.forEach(function (array) {
           if (array.includes(cardsMinLengthArray[i])) {
             cardsFiltered.push(cardsMinLengthArray[i]);
-            console.log(cardsFiltered.length);
           }
         });
         if (cardsFiltered.length === 4) {
           var newArr = cardsTotal.concat(cardsFiltered);
           cardsTotal = newArr;
-          console.log(cardsTotal);
+
           cardsFiltered = [];
         } else {
           cardsFiltered = [];
-          console.log(cardsTotal);
         }
       }
-      uniqueCards = cardsTotal.filter(function (it, i) {
-        return cardsTotal.indexOf(it) === i;
+      uniqueCards = cardsTotal.filter(function (it, k) {
+        return cardsTotal.indexOf(it) === k;
       });
       window.pin.renderPins(uniqueCards);
-     }
-  window.pin.renderPins(cardsToUpdate);
+    };
+    window.pin.renderPins(cardsToUpdate);
   };
 
   // console.log(mapFilters);

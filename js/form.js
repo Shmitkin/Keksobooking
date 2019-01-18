@@ -8,6 +8,8 @@
   var successMessage = document.querySelector('.success');
   var title = form.querySelector('#title');
   var submit = form.querySelector('.ad-form__submit');
+  var roomsNumber = form.querySelector('#room_number');
+  var capacity = form.querySelector('#capacity');
 
   var typeHouseMatchPrice = {
     'flat': 1000,
@@ -61,6 +63,29 @@
     price.placeholder = price.min;
   });
 
+  // Синхронизация комнат и гостей
+  roomsNumber.addEventListener('change', function () {
+    compareRoomsCapacity();
+  });
+
+  var compareRoomsCapacity = function () {
+    var capacityOptions = capacity.querySelectorAll('option');
+    var roomsCapacity = {
+      '1': ['1'],
+      '2': ['2', '1'],
+      '3': ['3', '2', '1'],
+      '100': ['0']
+    };
+    capacityOptions.forEach(function (option) {
+      if (roomsCapacity[roomsNumber.value].includes(option.value)) {
+        option.disabled = false;
+      } else {
+        option.disabled = true;
+      }
+    });
+    capacity.value = roomsCapacity[roomsNumber.value][0];
+  };
+
   // Кнопка опубликовать
   submit.addEventListener('click', function () {
     if (title.validity.valid === true && price.validity.valid === true) {
@@ -71,8 +96,8 @@
     successMessage.addEventListener('click', function () {
       successMessage.classList.add('hidden');
     });
-    document.addEventListener('keydown', function (evt1) {
-      if (evt1.keyCode === 27) {
+    document.addEventListener('keydown', function (evt) {
+      if (evt.keyCode === 27) {
         successMessage.classList.add('hidden');
       }
     });

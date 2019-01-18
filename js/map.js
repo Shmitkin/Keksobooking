@@ -5,12 +5,12 @@
   var map = document.querySelector('.map');
   var mapFormFilters = map.querySelector('.map__filters');
   var mapFilters = {
-      type: map.querySelector('#housing-type'),
-      price: map.querySelector('#housing-price'),
-      rooms: map.querySelector('#housing-rooms'),
-      capacity: map.querySelector('#housing-guests'),
-      features: map.querySelector('#housing-features').querySelectorAll('input')
-    };
+    type: map.querySelector('#housing-type'),
+    price: map.querySelector('#housing-price'),
+    rooms: map.querySelector('#housing-rooms'),
+    capacity: map.querySelector('#housing-guests'),
+    features: map.querySelector('#housing-features').querySelectorAll('input')
+  };
 
   var loadPins = function () {
     var successHandler = function (data) {
@@ -57,58 +57,67 @@
     mapFilters.features.forEach(function (input) {
       input.addEventListener('change', function () {
         filterCards(cards);
-      })
-    })
+      });
+    });
     window.pin.renderPins(cards);
   };
 
-  var filterCards = function (cards) {
-    var cardsCopy = cards;
+  var filterCards = function (cardsFromLoad) {
+    var cardsCopy = cardsFromLoad;
     var filterGuests = function (cards) {
       if (mapFilters.capacity.value !== 'any') {
-      cardsCopy = cards.filter(it => it.offer.guests.toString() === mapFilters.capacity.value);
-      console.log(cards);
+        cardsCopy = cards.filter(function (it) {
+          return it.offer.guests.toString() === mapFilters.capacity.value;
+        });
       }
-    }
+    };
     var filterType = function (cards) {
       if (mapFilters.type.value !== 'any') {
         cardsCopy = cards.filter(function (it) {
           return it.offer.type === mapFilters.type.value;
         });
       }
-    }
+    };
     var filterRooms = function (cards) {
       if (mapFilters.rooms.value !== 'any') {
-        cardsCopy = cards.filter(it => it.offer.rooms.toString() === mapFilters.rooms.value);
+        cardsCopy = cards.filter(function (it) {
+          return it.offer.rooms.toString() === mapFilters.rooms.value;
+        });
       }
-    }
+    };
     var filerPrice = function (cards) {
-      var priceFilter = {
-        any: 'any',
-        low: 'low',
-        middle: 'middle',
-        high: 'high'
+      var prices = {
+        low: 10000,
+        high: 50000
       };
       if (mapFilters.price.value !== 'any') {
-        if (mapFilters.price.value === priceFilter.low) {
-          cardsCopy = cards.filter(it => it.offer.price < 10000);
-        } else if (mapFilters.price.value === priceFilter.middle) {
-          cardsCopy = cards.filter(it => it.offer.price >= 10000 && it.offer.price <= 50000);
-        } else if (mapFilters.price.value === priceFilter.high) {
-          cardsCopy = cards.filter(it => it.offer.price > 50000);
+        if (mapFilters.price.value === 'low') {
+          cardsCopy = cards.filter(function (it) {
+            return it.offer.price < prices.low;
+          });
+        } else if (mapFilters.price.value === 'middle') {
+          cardsCopy = cards.filter(function (it) {
+            return it.offer.price >= prices.low && it.offer.price <= prices.high;
+          });
+        } else if (mapFilters.price.value === 'high') {
+          cardsCopy = cards.filter(function (it) {
+            return it.offer.price > prices.high;
+          });
         }
       }
-    }
+    };
     var filterFeatures = function (cards) {
-      var cardsToFilter = cards;
+      var filteredCards = cards;
       for (var i = 0; i < mapFilters.features.length; i++) {
         if (mapFilters.features[i].checked) {
-          var someCards = cardsToFilter.filter(it => it.offer.features.includes(mapFilters.features[i].value));
-          cardsToFilter = someCards;
+          var cardsToFilter = filteredCards.filter(function (it) {
+            return it.offer.features.includes(mapFilters.features[i].value);
+          });
+          filteredCards = cardsToFilter;
         }
       }
-      cardsCopy = cardsToFilter;
-    }
+      cardsCopy = filteredCards;
+    };
     filterGuests(cardsCopy);
     filterType(cardsCopy);
     filterRooms(cardsCopy);
@@ -116,7 +125,7 @@
     filterFeatures(cardsCopy);
     window.utils.removeMapCard();
     window.pin.renderPins(cardsCopy);
-  }
+  };
   // Exports
   window.map = {
     loadPins: loadPins,

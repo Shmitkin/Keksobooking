@@ -5,12 +5,8 @@
   var timeout = form.querySelector('#timeout');
   var type = form.querySelector('#type');
   var price = form.querySelector('#price');
-  var successMessage = document.querySelector('.success');
-  var title = form.querySelector('#title');
-  var submit = form.querySelector('.ad-form__submit');
   var roomsNumber = form.querySelector('#room_number');
   var capacity = form.querySelector('#capacity');
-
   var typeHouseMatchPrice = {
     'flat': 1000,
     'house': 5000,
@@ -67,7 +63,6 @@
   roomsNumber.addEventListener('change', function () {
     compareRoomsCapacity();
   });
-
   var compareRoomsCapacity = function () {
     var capacityOptions = capacity.querySelectorAll('option');
     var roomsCapacity = {
@@ -86,13 +81,11 @@
     capacity.value = roomsCapacity[roomsNumber.value][0];
   };
 
-  // Кнопка опубликовать
-  submit.addEventListener('click', function () {
-    if (title.validity.valid === true && price.validity.valid === true) {
-      successMessage.classList.remove('hidden');
-      resetForm();
-      window.map.resetMap();
-    }
+  var onSuccess = function () {
+    var successMessage = document.querySelector('.success');
+    successMessage.classList.remove('hidden');
+    resetForm();
+    window.map.resetMap();
     successMessage.addEventListener('click', function () {
       successMessage.classList.add('hidden');
     });
@@ -101,11 +94,31 @@
         successMessage.classList.add('hidden');
       }
     });
+  };
+
+  var onError = function () {
+    var errorMessage = document.querySelector('.error');
+    errorMessage.classList.remove('hidden');
+    resetForm();
+    window.map.resetMap();
+    errorMessage.addEventListener('click', function () {
+      errorMessage.classList.add('hidden');
+    });
+    document.addEventListener('keydown', function (evt) {
+      if (evt.keyCode === window.utils.ESC_KEYCODE) {
+        errorMessage.classList.add('hidden');
+      }
+    });
+  };
+
+  // Кнопка опубликовать
+  form.addEventListener('submit', function (evt) {
+    evt.preventDefault();
+    window.upload(new FormData(form), onSuccess, onError);
   });
 
   // Кнопка сброса
-  var resetButton = form.querySelector('.ad-form__reset');
-  resetButton.addEventListener('click', function (evt) {
+  form.addEventListener('reset', function (evt) {
     evt.preventDefault();
     resetForm();
     window.map.resetMap();

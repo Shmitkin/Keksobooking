@@ -42,17 +42,20 @@
     });
   };
 
-  var errorHandler = function () {
-    var errorMessage = document.querySelector('.error');
-    errorMessage.classList.remove('hidden');
-    errorMessage.addEventListener('click', function () {
-      errorMessage.classList.add('hidden');
+  var errorHandler = function (message) {
+    var errorContainer = document.querySelector('.error');
+    var errorMessage = errorContainer.querySelector('.server__response');
+    errorMessage.textContent = message;
+    errorContainer.classList.remove('hidden');
+    errorContainer.addEventListener('click', function () {
+      errorContainer.classList.add('hidden');
     });
     document.addEventListener('keydown', function (evt) {
       if (evt.keyCode === window.utils.ESC_KEYCODE) {
-        errorMessage.classList.add('hidden');
+        errorContainer.classList.add('hidden');
       }
     });
+
   };
 
   // Exports

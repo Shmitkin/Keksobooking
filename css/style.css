@@ -1188,7 +1188,8 @@ fieldset {
 }
 
 .success__message,
-.error__message {
+.error__message,
+.server__response {
   position: relative;
 
   color: #ffffff;

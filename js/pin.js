@@ -24,7 +24,7 @@
   var renderPins = function (cards) {
     var map = document.querySelector('.map');
     var fragment = document.createDocumentFragment();
-    window.form.enableForm();
+    window.form.enablePage();
     window.utils.removePins();
     if (cards.length > PINS_LIMIT) {
       for (var i = 0; i < PINS_LIMIT; i++) {
@@ -48,7 +48,7 @@
 
   // Exports
   window.pin = {
-    renderPins: renderPins
+    renderPins: renderPins,
   };
 
 

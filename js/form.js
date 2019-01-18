@@ -14,35 +14,24 @@
     'bungalo': 0
   };
 
-  var disableForm = function () {
-    form.classList.add('ad-form--disabled');
-    var formHeader = form.querySelector('.ad-form-header');
-    formHeader.disabled = true;
-    var formElement = form.querySelectorAll('.ad-form__element');
-    for (var i = 0; i < formElement.length; i++) {
-      formElement[i].disabled = true;
-    }
-    document.querySelector('#address').value = window.utils.MAIN_PIN_X + ', ' + window.utils.MAIN_PIN_Y;
-  };
-  disableForm();
-
-  var enableForm = function () {
+  var enablePage = function () {
     window.map.removeMapFader();
+    window.utils.enableForm(form);
     form.classList.remove('ad-form--disabled');
-    var formHeader = form.querySelector('.ad-form-header');
-    formHeader.disabled = false;
-    var formElement = form.querySelectorAll('.ad-form__element');
-    for (var i = 0; i < formElement.length; i++) {
-      formElement[i].disabled = false;
-    }
+    window.map.enableMapFilters();
+
   };
 
   var resetForm = function () {
     window.utils.resetFormFields(form);
     price.placeholder = typeHouseMatchPrice[type.value];
     price.min = typeHouseMatchPrice[type.value];
-    disableForm();
+    window.utils.disableForm(form);
+    form.classList.add('ad-form--disabled');
+    document.querySelector('#address').value = window.utils.MAIN_PIN_X + ', ' + window.utils.MAIN_PIN_Y;
   };
+
+  resetForm();
 
   // Синхронизация времени выезда/заезда
   timein.addEventListener('change', function () {
@@ -110,7 +99,7 @@
   });
   // Exports
   window.form = {
-    enableForm: enableForm
+    enablePage: enablePage
   };
 })();
 

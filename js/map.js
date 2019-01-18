@@ -12,6 +12,12 @@
     features: map.querySelector('#housing-features').querySelectorAll('input')
   };
 
+  window.utils.disableForm(mapFormFilters);
+
+  var enableMapFilters = function () {
+    window.utils.enableForm(mapFormFilters);
+  };
+
   var loadPins = function () {
     var successHandler = function (data) {
       updateCards(data);
@@ -22,6 +28,8 @@
   var resetMap = function () {
     window.utils.removePins();
     window.utils.resetFormFields(mapFormFilters);
+    window.utils.disableForm(mapFormFilters);
+
     resetMainPin();
     window.utils.removeMapCard();
     addMapFader();
@@ -132,6 +140,7 @@
     resetMap: resetMap,
     addMapFader: addMapFader,
     removeMapFader: removeMapFader,
+    enableMapFilters: enableMapFilters
   };
 
 })();

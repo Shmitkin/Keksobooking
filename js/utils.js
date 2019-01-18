@@ -8,8 +8,10 @@
 
   var removeMapCard = function () {
     var cardPopup = document.querySelector('.map__card');
+    var activePin =document.querySelector('.map__pin--active');
     if (cardPopup) {
       cardPopup.remove();
+      activePin.classList.remove('map__pin--active');
     }
   };
 
@@ -24,6 +26,7 @@
     var formInputs = formToReset.querySelectorAll('input:not([type="checkbox"])');
     var formSelects = formToReset.querySelectorAll('select');
     var formCheckboxes = formToReset.querySelectorAll('[type="checkbox"]');
+    var formTextareas = formToReset.querySelectorAll('textarea');
 
     formInputs.forEach(function (input) {
       input.value = '';
@@ -40,7 +43,58 @@
         }
       }
     });
+
+    formTextareas.forEach(function (textarea) {
+      textarea.value = '';
+    });
   };
+
+  var disableForm = function (formToDisable) {
+    var formInputs = formToDisable.querySelectorAll('input:not([type="checkbox"])');
+    var formSelects = formToDisable.querySelectorAll('select');
+    var formCheckboxes = formToDisable.querySelectorAll('[type="checkbox"]');
+    var formTextareas = formToDisable.querySelectorAll('textarea');
+
+    formInputs.forEach(function (input) {
+      input.disabled = true;
+    });
+
+    formCheckboxes.forEach(function (checkbox) {
+      checkbox.disabled = true;
+    });
+
+    formSelects.forEach(function (select) {
+      select.disabled = true;
+    });
+
+    formTextareas.forEach(function (textarea) {
+      textarea.disabled = true;
+    });
+  };
+
+  var enableForm = function (formToEnable) {
+    var formInputs = formToEnable.querySelectorAll('input:not([type="checkbox"])');
+    var formSelects = formToEnable.querySelectorAll('select');
+    var formCheckboxes = formToEnable.querySelectorAll('[type="checkbox"]');
+    var formTextareas = formToEnable.querySelectorAll('textarea');
+
+    formInputs.forEach(function (input) {
+      input.disabled = false;
+    });
+
+    formCheckboxes.forEach(function (checkbox) {
+      checkbox.disabled = false;
+    });
+
+    formSelects.forEach(function (select) {
+      select.disabled = false;
+    });
+
+    formTextareas.forEach(function (textarea) {
+      textarea.disabled = false;
+    });
+  };
+
 
   var errorHandler = function (message) {
     var errorContainer = document.querySelector('.error');
@@ -67,6 +121,8 @@
   // Exports
   window.utils = {
     resetFormFields: resetFormFields,
+    disableForm: disableForm,
+    enableForm: enableForm,
     removePins: removePins,
     removeMapCard: removeMapCard,
     MAP_PIN_HEIGHT: MAP_PIN_HEIGHT,

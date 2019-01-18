@@ -20,6 +20,7 @@
     addPopUpPhotos(popupCard.querySelector('.popup__photos'), popupCard.querySelector('.popup__photo'), card.offer.photos);
     addPopUpFeatures(card.offer.features, popupCard);
     document.querySelector('.map').appendChild(popupCard);
+
     var popupClose = document.querySelector('.popup__close');
     popupClose.addEventListener('click', function () {
       window.utils.removeMapCard();

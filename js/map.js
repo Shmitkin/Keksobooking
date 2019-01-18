@@ -43,20 +43,20 @@
 
   var updateCards = function (cards) {
     mapFilters.type.addEventListener('change', function () {
-      filterCards(cards);
+      window.debounce(filterCards, cards);
     });
     mapFilters.price.addEventListener('change', function () {
-      filterCards(cards);
+      window.debounce(filterCards, cards);
     });
     mapFilters.rooms.addEventListener('change', function () {
-      filterCards(cards);
+      window.debounce(filterCards, cards);
     });
     mapFilters.capacity.addEventListener('change', function () {
-      filterCards(cards);
+      window.debounce(filterCards, cards);
     });
     mapFilters.features.forEach(function (input) {
       input.addEventListener('change', function () {
-        filterCards(cards);
+        window.debounce(filterCards, cards);
       });
     });
     window.pin.renderPins(cards);

@@ -2,6 +2,8 @@
 
 (function () {
 
+  var PINS_LIMIT = 5;
+
   var createPin = function (card) {
     var mapPin = document.querySelector('#pin').content.querySelector('.map__pin');
     var anotherPin = mapPin.cloneNode(true);
@@ -17,19 +19,23 @@
     return anotherPin;
   };
 
-  var renderPins = function () {
-    window.loadCardsInfo(function (cards) {
-      var map = document.querySelector('.map');
-      var fragment = document.createDocumentFragment();
-      window.form.enableForm();
-      window.utils.removePins();
-      for (var i = 0; i < cards.length; i++) {
+
+  var renderPins = function (cards) {
+    var map = document.querySelector('.map');
+    var fragment = document.createDocumentFragment();
+    window.form.enableForm();
+    window.utils.removePins();
+    if (cards.length > PINS_LIMIT) {
+      for (var i = 0; i < PINS_LIMIT; i++) {
         fragment.appendChild(createPin(cards[i]));
       }
-      map.appendChild(fragment);
-    });
+    } else {
+      for (var j = 0; j < cards.length; j++) {
+        fragment.appendChild(createPin(cards[j]));
+      }
+    }
+    map.appendChild(fragment);
   };
-
 
   // Exports
   window.pin = {

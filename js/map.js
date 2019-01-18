@@ -16,7 +16,7 @@
     var successHandler = function (data) {
       updateCards(data);
     };
-    window.loadCardsInfo(successHandler);
+    window.loadCardsInfo(successHandler, window.utils.errorHandler);
   };
 
   var resetMap = function () {

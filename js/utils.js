@@ -42,6 +42,19 @@
     });
   };
 
+  var errorHandler = function () {
+    var errorMessage = document.querySelector('.error');
+    errorMessage.classList.remove('hidden');
+    errorMessage.addEventListener('click', function () {
+      errorMessage.classList.add('hidden');
+    });
+    document.addEventListener('keydown', function (evt) {
+      if (evt.keyCode === window.utils.ESC_KEYCODE) {
+        errorMessage.classList.add('hidden');
+      }
+    });
+  };
+
   // Exports
   window.utils = {
     resetFormFields: resetFormFields,
@@ -51,6 +64,7 @@
     MAP_PIN_WIDTH: MAP_PIN_WIDTH,
     MAIN_PIN_X: MAIN_PIN_X,
     MAIN_PIN_Y: MAIN_PIN_Y,
-    ESC_KEYCODE: ESC_KEYCODE
+    ESC_KEYCODE: ESC_KEYCODE,
+    errorHandler: errorHandler
   };
 })();

@@ -15,10 +15,11 @@
     anotherPin.addEventListener('click', function () {
       window.utils.removeMapCard();
       window.popup.fillPopUpInfo(card);
+      activatePin(anotherPin);
+
     });
     return anotherPin;
   };
-
 
   var renderPins = function (cards) {
     var map = document.querySelector('.map');
@@ -37,9 +38,18 @@
     map.appendChild(fragment);
   };
 
+  var activatePin = function (pin) {
+    var pinActivated = document.querySelector('.map__pin--active');
+    if (pinActivated) {
+      pinActivated.classList.remove('map__pin--active');
+    }
+    pin.classList.add('map__pin--active');
+  };
+
   // Exports
   window.pin = {
     renderPins: renderPins
   };
+
 
 })();

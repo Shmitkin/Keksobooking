@@ -45,17 +45,23 @@
   var errorHandler = function (message) {
     var errorContainer = document.querySelector('.error');
     var errorMessage = errorContainer.querySelector('.server__response');
+    var errorButton = errorContainer.querySelector('.error__button');
     errorMessage.textContent = message;
     errorContainer.classList.remove('hidden');
+
     errorContainer.addEventListener('click', function () {
       errorContainer.classList.add('hidden');
     });
+
     document.addEventListener('keydown', function (evt) {
       if (evt.keyCode === window.utils.ESC_KEYCODE) {
         errorContainer.classList.add('hidden');
       }
     });
 
+    errorButton.addEventListener('click', function () {
+      errorContainer.classList.add('hidden');
+    });
   };
 
   // Exports

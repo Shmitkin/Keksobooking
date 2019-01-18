@@ -4,6 +4,7 @@
   var MAP_PIN_HEIGHT = 60;
   var MAIN_PIN_X = 570;
   var MAIN_PIN_Y = 375;
+  var ESC_KEYCODE = 27;
 
   var removeMapCard = function () {
     var cardPopup = document.querySelector('.map__card');
@@ -50,5 +51,6 @@
     MAP_PIN_WIDTH: MAP_PIN_WIDTH,
     MAIN_PIN_X: MAIN_PIN_X,
     MAIN_PIN_Y: MAIN_PIN_Y,
+    ESC_KEYCODE: ESC_KEYCODE
   };
 })();

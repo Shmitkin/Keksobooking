@@ -97,7 +97,7 @@
       successMessage.classList.add('hidden');
     });
     document.addEventListener('keydown', function (evt) {
-      if (evt.keyCode === 27) {
+      if (evt.keyCode === window.utils.ESC_KEYCODE) {
         successMessage.classList.add('hidden');
       }
     });

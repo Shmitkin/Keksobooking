@@ -22,14 +22,13 @@
     var successHandler = function (data) {
       updateCards(data);
     };
-    window.loadCardsInfo(successHandler, window.utils.errorHandler);
+    window.backend.load(successHandler, window.utils.errorHandler);
   };
 
   var resetMap = function () {
     window.utils.removePins();
     window.utils.resetFormFields(mapFormFilters);
     window.utils.disableForm(mapFormFilters);
-
     resetMainPin();
     window.utils.removeMapCard();
     addMapFader();

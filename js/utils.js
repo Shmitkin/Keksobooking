@@ -5,10 +5,11 @@
   var MAIN_PIN_X = 570;
   var MAIN_PIN_Y = 375;
   var ESC_KEYCODE = 27;
+  var FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
 
   var removeMapCard = function () {
     var cardPopup = document.querySelector('.map__card');
-    var activePin =document.querySelector('.map__pin--active');
+    var activePin = document.querySelector('.map__pin--active');
     if (cardPopup) {
       cardPopup.remove();
       activePin.classList.remove('map__pin--active');
@@ -17,9 +18,9 @@
 
   var removePins = function () {
     var mapPins = document.querySelectorAll('.map__pin:not(.map__pin--main)');
-    for (var i = 0; i < mapPins.length; i++) {
-      mapPins[i].remove();
-    }
+    mapPins.forEach(function (pin) {
+      pin.remove();
+    });
   };
 
   var resetFormFields = function (formToReset) {
@@ -118,6 +119,21 @@
     });
   };
 
+  var prewievImage = function (choosedFile, preview) {
+    var file = choosedFile.files[0];
+    var fileName = file.name.toLowerCase();
+    var matches = FILE_TYPES.some(function (it) {
+      return fileName.endsWith(it);
+    });
+    if (matches) {
+      var reader = new FileReader();
+      reader.addEventListener('load', function () {
+        preview.src = reader.result;
+      });
+      reader.readAsDataURL(file);
+    }
+  };
+
   // Exports
   window.utils = {
     resetFormFields: resetFormFields,
@@ -130,6 +146,8 @@
     MAIN_PIN_X: MAIN_PIN_X,
     MAIN_PIN_Y: MAIN_PIN_Y,
     ESC_KEYCODE: ESC_KEYCODE,
-    errorHandler: errorHandler
+    errorHandler: errorHandler,
+    prewievImage: prewievImage
   };
+
 })();

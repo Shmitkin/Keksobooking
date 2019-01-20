@@ -75,7 +75,7 @@
 
     formButtons.forEach(function (button) {
       button.disabled = true;
-    })
+    });
   };
 
   var enableForm = function (formToEnable) {
@@ -103,7 +103,7 @@
 
     formButtons.forEach(function (button) {
       button.disabled = false;
-    })
+    });
   };
 
 

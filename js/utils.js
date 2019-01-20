@@ -12,6 +12,8 @@
     var activePin = document.querySelector('.map__pin--active');
     if (cardPopup) {
       cardPopup.remove();
+    }
+    if (activePin) {
       activePin.classList.remove('map__pin--active');
     }
   };

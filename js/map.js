@@ -12,16 +12,23 @@
     features: map.querySelector('#housing-features').querySelectorAll('input')
   };
 
+  window.utils.disableForm(mapFormFilters);
+
+  var enableMapFilters = function () {
+    window.utils.enableForm(mapFormFilters);
+  };
+
   var loadPins = function () {
     var successHandler = function (data) {
       updateCards(data);
     };
-    window.loadCardsInfo(successHandler);
+    window.backend.load(successHandler, window.utils.errorHandler);
   };
 
   var resetMap = function () {
     window.utils.removePins();
     window.utils.resetFormFields(mapFormFilters);
+    window.utils.disableForm(mapFormFilters);
     resetMainPin();
     window.utils.removeMapCard();
     addMapFader();
@@ -43,20 +50,20 @@
 
   var updateCards = function (cards) {
     mapFilters.type.addEventListener('change', function () {
-      filterCards(cards);
+      window.debounce(filterCards, cards);
     });
     mapFilters.price.addEventListener('change', function () {
-      filterCards(cards);
+      window.debounce(filterCards, cards);
     });
     mapFilters.rooms.addEventListener('change', function () {
-      filterCards(cards);
+      window.debounce(filterCards, cards);
     });
     mapFilters.capacity.addEventListener('change', function () {
-      filterCards(cards);
+      window.debounce(filterCards, cards);
     });
     mapFilters.features.forEach(function (input) {
       input.addEventListener('change', function () {
-        filterCards(cards);
+        window.debounce(filterCards, cards);
       });
     });
     window.pin.renderPins(cards);
@@ -85,7 +92,7 @@
         });
       }
     };
-    var filerPrice = function (cards) {
+    var filterPrice = function (cards) {
       var prices = {
         low: 10000,
         high: 50000
@@ -121,7 +128,7 @@
     filterGuests(cardsCopy);
     filterType(cardsCopy);
     filterRooms(cardsCopy);
-    filerPrice(cardsCopy);
+    filterPrice(cardsCopy);
     filterFeatures(cardsCopy);
     window.utils.removeMapCard();
     window.pin.renderPins(cardsCopy);
@@ -132,6 +139,7 @@
     resetMap: resetMap,
     addMapFader: addMapFader,
     removeMapFader: removeMapFader,
+    enableMapFilters: enableMapFilters
   };
 
 })();

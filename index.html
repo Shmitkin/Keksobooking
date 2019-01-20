@@ -173,7 +173,7 @@
           <label class="ad-form__label">Фотографии жилья</label>
           <div class="ad-form__photo-container">
             <div class="ad-form__upload">
-              <input type="file" id="images" name="images" class="ad-form__input visually-hidden">
+              <input type="file" id="images" name="images" class="ad-form__input visually-hidden" multiple>
               <label for="images" class="ad-form__drop-zone">Загрузите или&nbsp;перетащите сюда фото</label>
             </div>
             <div class="ad-form__photo">
@@ -254,6 +254,13 @@
     <div class="error">
       <p class="error__message">Ошибка загрузки объявления</p>
       <button class="error__button" href="#">Попробовать снова</button>
+    </div>
+  </template>
+
+  <!-- Контейнер с фотографией -->
+  <template id="photo_preview">
+    <div class="ad-form__photo__preview">
+      <img src="" width="70px" height="70px">
     </div>
   </template>
 

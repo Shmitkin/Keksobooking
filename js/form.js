@@ -10,7 +10,9 @@
   var avatarChooser = form.querySelector('#avatar');
   var avatarPreview = form.querySelector('.ad-form-header__preview').querySelector('img');
   var photoChooser = form.querySelector('#images');
-  var photoPreview = form.querySelector('.ad-form__photo');
+  var photoPreviewContainer = form.querySelector('.ad-form__photo-container');
+  var photoSample = photoPreviewContainer.querySelector('.ad-form__photo');
+  var photoPreview = document.querySelector('#photo_preview').content.querySelector('.ad-form__photo__preview');
   var typeHouseMatchPrice = {
     'flat': 1000,
     'house': 5000,
@@ -33,6 +35,8 @@
     form.classList.add('ad-form--disabled');
     document.querySelector('#address').value = window.utils.MAIN_PIN_X + ', ' + window.utils.MAIN_PIN_Y;
     avatarPreview.src = 'img/muffin-grey.svg';
+    compareRoomsCapacity();
+    removePhotosPreviews();
   };
 
   var successHandler = function () {
@@ -68,10 +72,39 @@
     capacity.value = roomsCapacity[roomsNumber.value][0];
   };
 
+  var addPhotosPreviews = function (chooser) {
+    var photosPreviews = document.createDocumentFragment();
+    for (var i = 0; i < chooser.files.length; i++) {
+      var photoPreviewCopy = photoPreview.cloneNode(true);
+      var img = photoPreviewCopy.querySelector('img');
+      window.utils.prewievImage(photoChooser.files[i], img);
+      photosPreviews.appendChild(photoPreviewCopy);
+    }
+    if (photoSample) {
+      photoSample.remove();
+    }
+    photoPreviewContainer.appendChild(photosPreviews);
+  };
+
+  var removePhotosPreviews = function () {
+    var previews = form.querySelectorAll('.ad-form__photo__preview');
+    if (previews.length > 0) {
+      previews.forEach(function (preview) {
+        preview.remove();
+      });
+      photoPreviewContainer.appendChild(photoSample);
+    }
+  };
+
   resetForm();
-  
+  compareRoomsCapacity();
+
   avatarChooser.addEventListener('change', function () {
-   window.utils.prewievImage(avatarChooser, avatarPreview);
+    window.utils.prewievImage(avatarChooser.files[0], avatarPreview);
+  });
+
+  photoChooser.addEventListener('change', function () {
+    addPhotosPreviews(photoChooser);
   });
 
   // Синхронизация времени выезда/заезда

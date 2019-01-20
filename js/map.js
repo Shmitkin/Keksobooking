@@ -92,7 +92,7 @@
         });
       }
     };
-    var filerPrice = function (cards) {
+    var filterPrice = function (cards) {
       var prices = {
         low: 10000,
         high: 50000
@@ -128,7 +128,7 @@
     filterGuests(cardsCopy);
     filterType(cardsCopy);
     filterRooms(cardsCopy);
-    filerPrice(cardsCopy);
+    filterPrice(cardsCopy);
     filterFeatures(cardsCopy);
     window.utils.removeMapCard();
     window.pin.renderPins(cardsCopy);

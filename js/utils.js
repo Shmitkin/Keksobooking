@@ -55,6 +55,7 @@
     var formSelects = formToDisable.querySelectorAll('select');
     var formCheckboxes = formToDisable.querySelectorAll('[type="checkbox"]');
     var formTextareas = formToDisable.querySelectorAll('textarea');
+    var formButtons = formToDisable.querySelectorAll('button');
 
     formInputs.forEach(function (input) {
       input.disabled = true;
@@ -71,6 +72,10 @@
     formTextareas.forEach(function (textarea) {
       textarea.disabled = true;
     });
+
+    formButtons.forEach(function (button) {
+      button.disabled = true;
+    })
   };
 
   var enableForm = function (formToEnable) {
@@ -78,6 +83,7 @@
     var formSelects = formToEnable.querySelectorAll('select');
     var formCheckboxes = formToEnable.querySelectorAll('[type="checkbox"]');
     var formTextareas = formToEnable.querySelectorAll('textarea');
+    var formButtons = formToEnable.querySelectorAll('button');
 
     formInputs.forEach(function (input) {
       input.disabled = false;
@@ -94,6 +100,10 @@
     formTextareas.forEach(function (textarea) {
       textarea.disabled = false;
     });
+
+    formButtons.forEach(function (button) {
+      button.disabled = false;
+    })
   };
 
 
@@ -119,8 +129,8 @@
     });
   };
 
-  var prewievImage = function (choosedFile, preview) {
-    var file = choosedFile.files[0];
+  var prewievImage = function (photo, preview) {
+    var file = photo;
     var fileName = file.name.toLowerCase();
     var matches = FILE_TYPES.some(function (it) {
       return fileName.endsWith(it);

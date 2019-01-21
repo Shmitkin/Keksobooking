@@ -22,14 +22,8 @@
     document.querySelector('.map').appendChild(popupCard);
 
     var popupClose = document.querySelector('.popup__close');
-    popupClose.addEventListener('click', function () {
-      window.utils.removeMapCard();
-    });
-    document.addEventListener('keydown', function (evt) {
-      if (evt.keyCode === window.utils.ESC_KEYCODE) {
-        window.utils.removeMapCard();
-      }
-    });
+    popupClose.addEventListener('click', window.utils.removeMapCard);
+    document.addEventListener('keydown', window.utils.escPopupEvent);
   };
 
   var getRusCardType = function (TypeToTranslate) {
@@ -43,6 +37,10 @@
   };
 
   var addPopUpPhotos = function (containerElement, photoElement, photosArray) {
+    if (photosArray.length === 0) {
+      containerElement.innerHTML = '';
+      return;
+    }
     photoElement.src = photosArray[0];
     for (var i = 1; i < photosArray.length; i++) {
       var anotherImg = photoElement.cloneNode(true);

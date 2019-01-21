@@ -11,8 +11,21 @@
     var cardPopup = document.querySelector('.map__card');
     var activePin = document.querySelector('.map__pin--active');
     if (cardPopup) {
+      cardPopup.removeEventListener('click', window.utils.removeMapCard);
+      document.removeEventListener('keydown', escPopupEvent);
       cardPopup.remove();
+    }
+    if (activePin) {
       activePin.classList.remove('map__pin--active');
+    }
+  };
+
+  var escPopupEvent = function (evt) {
+    var cardPopup = document.querySelector('.map__card');
+    if (evt.keyCode === ESC_KEYCODE) {
+      window.utils.removeMapCard();
+      document.removeEventListener('keydown', escPopupEvent);
+      cardPopup.removeEventListener('click', window.utils.removeMapCard);
     }
   };
 
@@ -112,21 +125,24 @@
     var errorMessage = errorContainer.querySelector('.server__response');
     var errorButton = errorContainer.querySelector('.error__button');
     errorMessage.textContent = message;
-    errorContainer.classList.remove('hidden');
-
-    errorContainer.addEventListener('click', function () {
+    var openErrorMessage = function () {
+      errorContainer.classList.remove('hidden');
+    };
+    var closeErrorMessage = function () {
       errorContainer.classList.add('hidden');
-    });
-
-    document.addEventListener('keydown', function (evt) {
-      if (evt.keyCode === window.utils.ESC_KEYCODE) {
-        errorContainer.classList.add('hidden');
+      errorContainer.removeEventListener('click', closeErrorMessage);
+      document.removeEventListener('keydown', onErrorEscPress);
+      errorButton.removeEventListener('click', closeErrorMessage);
+    };
+    var onErrorEscPress = function (evt) {
+      if (evt.keyCode === ESC_KEYCODE) {
+        closeErrorMessage();
       }
-    });
-
-    errorButton.addEventListener('click', function () {
-      errorContainer.classList.add('hidden');
-    });
+    };
+    openErrorMessage();
+    errorContainer.addEventListener('click', closeErrorMessage);
+    document.addEventListener('keydown', closeErrorMessage);
+    errorButton.addEventListener('click', closeErrorMessage);
   };
 
   var prewievImage = function (photo, preview) {
@@ -157,7 +173,8 @@
     MAIN_PIN_Y: MAIN_PIN_Y,
     ESC_KEYCODE: ESC_KEYCODE,
     errorHandler: errorHandler,
-    prewievImage: prewievImage
+    prewievImage: prewievImage,
+    escPopupEvent: escPopupEvent
   };
 
 })();

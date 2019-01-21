@@ -41,17 +41,24 @@
 
   var successHandler = function () {
     var successMessage = document.querySelector('.success');
-    successMessage.classList.remove('hidden');
+    var openSuccessMessage = function () {
+      successMessage.classList.remove('hidden');
+    };
+    var closeSuccessMessage = function () {
+      successMessage.classList.add('hidden');
+      successMessage.removeEventListener('click', closeSuccessMessage);
+      document.removeEventListener('keydown', closeSuccessMessage);
+    };
+    var onMessageEscPress = function (evt) {
+      if (evt.keyCode === window.utils.ESC_KEYCODE) {
+        closeSuccessMessage();
+      }
+    };
+    openSuccessMessage();
     resetForm();
     window.map.resetMap();
-    successMessage.addEventListener('click', function () {
-      successMessage.classList.add('hidden');
-    });
-    document.addEventListener('keydown', function (evt) {
-      if (evt.keyCode === window.utils.ESC_KEYCODE) {
-        successMessage.classList.add('hidden');
-      }
-    });
+    successMessage.addEventListener('click', closeSuccessMessage);
+    document.addEventListener('keydown', onMessageEscPress);
   };
 
   var compareRoomsCapacity = function () {

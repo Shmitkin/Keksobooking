@@ -66,7 +66,7 @@
         window.debounce(filterCards, cards);
       });
     });
-    window.pin.renderPins(cards);
+    window.pin.render(cards);
   };
 
   var filterCards = function (cardsFromLoad) {
@@ -115,31 +115,31 @@
     };
     var filterFeatures = function (cards) {
       var filteredCards = cards;
-      for (var i = 0; i < mapFilters.features.length; i++) {
-        if (mapFilters.features[i].checked) {
+      mapFilters.features.forEach(function (filter) {
+        if (filter.checked) {
           var cardsToFilter = filteredCards.filter(function (it) {
-            return it.offer.features.includes(mapFilters.features[i].value);
+            return it.offer.features.includes(filter.value);
           });
           filteredCards = cardsToFilter;
         }
-      }
+      });
       cardsCopy = filteredCards;
     };
+
     filterGuests(cardsCopy);
     filterType(cardsCopy);
     filterRooms(cardsCopy);
     filterPrice(cardsCopy);
     filterFeatures(cardsCopy);
     window.utils.removeMapCard();
-    window.pin.renderPins(cardsCopy);
+    window.pin.render(cardsCopy);
   };
   // Exports
   window.map = {
     loadPins: loadPins,
-    resetMap: resetMap,
-    addMapFader: addMapFader,
-    removeMapFader: removeMapFader,
-    enableMapFilters: enableMapFilters
+    reset: resetMap,
+    removeFader: removeMapFader,
+    enableFilters: enableMapFilters
   };
 
 })();

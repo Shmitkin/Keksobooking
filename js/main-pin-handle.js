@@ -14,10 +14,10 @@
     var onMouseMove = function (moveEvt) {
       moveEvt.preventDefault();
       var MainPinLimits = {
-        top: 130 - window.utils.MAP_PIN_HEIGHT,
-        left: 0,
+        top: window.utils.MAP_LIMIT_TOP - window.utils.MAP_PIN_HEIGHT,
+        left: window.utils.MAP_LIMIT_LEFT,
         right: map.clientWidth - window.utils.MAP_PIN_WIDTH,
-        bottom: 630
+        bottom: window.utils.MAP_LIMIT_BOTTOM
       };
       var shift = {
         x: startCoords.x - moveEvt.clientX,

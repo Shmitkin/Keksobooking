@@ -14,7 +14,7 @@
     mapPinImg.alt = card.offer.title;
     anotherPin.addEventListener('click', function () {
       window.utils.removeMapCard();
-      window.popup.fillPopUpInfo(card);
+      window.popup.fillInfo(card);
       activatePin(anotherPin);
 
     });
@@ -31,9 +31,9 @@
         fragment.appendChild(createPin(cards[i]));
       }
     } else {
-      for (var j = 0; j < cards.length; j++) {
-        fragment.appendChild(createPin(cards[j]));
-      }
+      cards.forEach(function (card) {
+        fragment.appendChild(createPin(card));
+      });
     }
     map.appendChild(fragment);
   };
@@ -48,7 +48,7 @@
 
   // Exports
   window.pin = {
-    renderPins: renderPins,
+    render: renderPins,
   };
 
 

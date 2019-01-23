@@ -41,33 +41,25 @@
       containerElement.innerHTML = '';
       return;
     }
-    photoElement.src = photosArray[0];
-    for (var i = 1; i < photosArray.length; i++) {
+    photosArray.forEach(function (photo) {
       var anotherImg = photoElement.cloneNode(true);
-      anotherImg.src = photosArray[i];
+      anotherImg.src = photo;
       containerElement.appendChild(anotherImg);
-    }
+    });
+    photoElement.remove();
   };
 
   var addPopUpFeatures = function (cardFeatures, card) {
-    var CARD_FEATURES = [
-      'wifi',
-      'dishwasher',
-      'parking',
-      'washer',
-      'elevator',
-      'conditioner'
-    ];
-    for (var i = 0; i < CARD_FEATURES.length; i++) {
-      if (cardFeatures.indexOf(CARD_FEATURES[i]) === -1) {
-        card.querySelector('.popup__feature--' + CARD_FEATURES[i]).className = 'hidden';
+    window.utils.CARD_FEATURES.forEach(function (feature) {
+      if (cardFeatures.indexOf(feature) === -1) {
+        card.querySelector('.popup__feature--' + feature).className = 'hidden';
       }
-    }
+    });
   };
 
   //  Exports
   window.popup = {
-    fillPopUpInfo: fillPopUpInfo
+    fillInfo: fillPopUpInfo
   };
 
 })();

@@ -21,10 +21,10 @@
   };
 
   var enablePage = function () {
-    window.map.removeMapFader();
+    window.map.removeFader();
     window.utils.enableForm(form);
     form.classList.remove('ad-form--disabled');
-    window.map.enableMapFilters();
+    window.map.enableFilters();
   };
 
   var resetForm = function () {
@@ -56,7 +56,7 @@
     };
     openSuccessMessage();
     resetForm();
-    window.map.resetMap();
+    window.map.reset();
     successMessage.addEventListener('click', closeSuccessMessage);
     document.addEventListener('keydown', onMessageEscPress);
   };
@@ -70,23 +70,20 @@
       '100': ['0']
     };
     capacityOptions.forEach(function (option) {
-      if (roomsCapacity[roomsNumber.value].includes(option.value)) {
-        option.disabled = false;
-      } else {
-        option.disabled = true;
-      }
+      option.disabled = !roomsCapacity[roomsNumber.value].includes(option.value);
     });
     capacity.value = roomsCapacity[roomsNumber.value][0];
   };
 
   var addPhotosPreviews = function (chooser) {
     var photosPreviews = document.createDocumentFragment();
-    for (var i = 0; i < chooser.files.length; i++) {
+    var files = Array.from(chooser.files);
+    files.forEach(function (file) {
       var photoPreviewCopy = photoPreview.cloneNode(true);
       var img = photoPreviewCopy.querySelector('img');
-      window.utils.prewievImage(photoChooser.files[i], img);
+      window.utils.prewievImage(file, img);
       photosPreviews.appendChild(photoPreviewCopy);
-    }
+    });
     if (photoSample) {
       photoSample.remove();
     }
@@ -144,7 +141,7 @@
   form.addEventListener('reset', function (evt) {
     evt.preventDefault();
     resetForm();
-    window.map.resetMap();
+    window.map.reset();
   });
   // Exports
   window.form = {

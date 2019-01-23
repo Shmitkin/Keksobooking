@@ -6,6 +6,10 @@
   var MAIN_PIN_Y = 375;
   var ESC_KEYCODE = 27;
   var FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
+  var MAP_LIMIT_TOP = 130;
+  var MAP_LIMIT_BOTTOM = 570;
+  var MAP_LIMIT_LEFT = 0;
+  var CARD_FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
 
   var removeMapCard = function () {
     var cardPopup = document.querySelector('.map__card');
@@ -51,11 +55,12 @@
     });
 
     formSelects.forEach(function (select) {
-      for (var i = 0; i < select.length; i++) {
-        if (select[i].defaultSelected === true) {
-          select.value = select[i].value;
+      var options = Array.from(select.options);
+      options.forEach(function (option) {
+        if (option.defaultSelected) {
+          select.value = option.value;
         }
-      }
+      });
     });
 
     formTextareas.forEach(function (textarea) {
@@ -162,19 +167,23 @@
 
   // Exports
   window.utils = {
+    MAP_PIN_HEIGHT: MAP_PIN_HEIGHT,
+    MAP_PIN_WIDTH: MAP_PIN_WIDTH,
+    MAIN_PIN_X: MAIN_PIN_X,
+    MAIN_PIN_Y: MAIN_PIN_Y,
+    MAP_LIMIT_BOTTOM: MAP_LIMIT_BOTTOM,
+    MAP_LIMIT_TOP: MAP_LIMIT_TOP,
+    MAP_LIMIT_LEFT: MAP_LIMIT_LEFT,
+    ESC_KEYCODE: ESC_KEYCODE,
+    CARD_FEATURES: CARD_FEATURES,
+    errorHandler: errorHandler,
+    prewievImage: prewievImage,
+    escPopupEvent: escPopupEvent,
     resetFormFields: resetFormFields,
     disableForm: disableForm,
     enableForm: enableForm,
     removePins: removePins,
     removeMapCard: removeMapCard,
-    MAP_PIN_HEIGHT: MAP_PIN_HEIGHT,
-    MAP_PIN_WIDTH: MAP_PIN_WIDTH,
-    MAIN_PIN_X: MAIN_PIN_X,
-    MAIN_PIN_Y: MAIN_PIN_Y,
-    ESC_KEYCODE: ESC_KEYCODE,
-    errorHandler: errorHandler,
-    prewievImage: prewievImage,
-    escPopupEvent: escPopupEvent
   };
 
 })();

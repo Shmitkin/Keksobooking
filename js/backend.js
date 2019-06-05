@@ -1,6 +1,6 @@
 'use strict';
 (function () {
-  var URL_LOAD = 'https://shmitkin.github.io/Keksobooking/mock/data';
+  var URL_LOAD = 'https://shmitkin.github.io/Keksobooking/mock/data.json';
   var URL_UPLOAD = 'https://js.dump.academy/keksobooking';
   var TIMEOUT = 5000;
   var SUCCESS_CODE = 200;
